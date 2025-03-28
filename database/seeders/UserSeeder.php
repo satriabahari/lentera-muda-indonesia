@@ -17,16 +17,6 @@ class UserSeeder extends Seeder
     {
         User::insert([
             [
-                'name' => 'Peserta User',
-                'email' => 'peserta@gmail.com',
-                'password' => Hash::make('password'),
-                'role_id' => 4,
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
                 'name' => 'Guru User',
                 'email' => 'guru@gmail.com',
                 'password' => Hash::make('password'),
