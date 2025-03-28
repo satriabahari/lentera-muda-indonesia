@@ -22,7 +22,9 @@ class ReviewResource extends Resource
 {
     protected static ?string $model = Review::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-oval-left-ellipsis';
+
+    protected static ?string $navigationGroup = 'Main';
 
     public static function form(Form $form): Form
     {
@@ -56,10 +58,12 @@ class ReviewResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->label("No."),
+                TextColumn::make('No.')
+                    ->rowIndex()
+                    ->alignCenter(),
                 TextColumn::make('course.title')->label('Course'),
                 TextColumn::make('user.name')->label('User'),
-                TextColumn::make('rating')->sortable(),
+                TextColumn::make('rating')->sortable()->alignCenter(),
                 TextColumn::make('comment')->limit(50),
                 TextColumn::make('created_at')->dateTime(),
             ])
@@ -91,5 +95,15 @@ class ReviewResource extends Resource
             'create' => Pages\CreateReview::route('/create'),
             'edit' => Pages\EditReview::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'Total Review';
     }
 }
