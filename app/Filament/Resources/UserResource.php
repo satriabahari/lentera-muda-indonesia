@@ -8,6 +8,7 @@ use App\Models\User;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
@@ -22,7 +23,10 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
+
+    protected static ?string $navigationGroup = 'Others';
+
 
     public static function form(Form $form): Form
     {
@@ -42,12 +46,8 @@ class UserResource extends Resource
                     ->required()
                     ->minLength(8)
                     ->placeholder('Masukkan password'),
-                Select::make("role")
-                    ->options([
-                        "peserta" => "Peserta",
-                        "guru" => "Guru",
-                        "admin" => "Admin"
-                    ])
+                Select::make('role_id')
+                    ->relationship("role", "name")
                     ->required(),
                 DateTimePicker::make('created_at')
                     ->label('Dibuat Pada')
@@ -63,13 +63,15 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('No.')
-                    ->rowIndex(),
+                    ->rowIndex()
+                    ->alignCenter(),
                 TextColumn::make("name")
                     ->searchable(),
                 TextColumn::make("email")
                     ->searchable(),
-                TextColumn::make("role")
-                    ->sortable(),
+                // TextColumn::make("role")
+                //     ->sortable(),
+                TextColumn::make("role.name"),
                 TextColumn::make("remember_token")
                     ->hidden(),
                 TextColumn::make("created_at")
@@ -109,5 +111,20 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'Total Users';
+    }
+
+    public static function canViewAny(): bool
+    {
+        return Filament::auth()->user()->role_id === 1;
     }
 }

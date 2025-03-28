@@ -4,42 +4,38 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Lesson;
+use App\Models\Question;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\LessonResource\Pages;
+use App\Filament\Resources\QuestionResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\LessonResource\RelationManagers;
-use Filament\Tables\Columns\IconColumn;
+use App\Filament\Resources\QuestionResource\RelationManagers;
 
-class LessonResource extends Resource
+class QuestionResource extends Resource
 {
-    protected static ?string $model = Lesson::class;
+    protected static ?string $model = Question::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-book-open';
-
-    protected static ?string $navigationGroup = 'Main';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard';
+    protected static ?string $navigationGroup = 'Sub Main';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('course_id')
-                    ->relationship("course", "title")
+                Select::make("quiz_id")
+                    ->relationship("quiz", "title")
                     ->required(),
-
-                TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-
-                Textarea::make('content')
-                    ->required(),
+                TextInput::make("question"),
+                Select::make('type')
+                    ->options([
+                        "multiple_choice" => "Multiple Choice",
+                        "essay" => "Essay",
+                    ])
             ]);
     }
 
@@ -47,23 +43,19 @@ class LessonResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('No.')
+                TextColumn::make("No.")
                     ->rowIndex()
                     ->alignCenter(),
-                TextColumn::make('course.title')->label('Course'),
-                TextColumn::make('title')->searchable(),
-                TextColumn::make('content'),
-                IconColumn::make('is_active')
-                    ->boolean()
-                    ->alignCenter(),
-                TextColumn::make('created_at')->dateTime(),
+                TextColumn::make("quiz.title")->label("Quiz"),
+                TextColumn::make("question"),
+                TextColumn::make("type"),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -82,9 +74,9 @@ class LessonResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLessons::route('/'),
-            'create' => Pages\CreateLesson::route('/create'),
-            'edit' => Pages\EditLesson::route('/{record}/edit'),
+            'index' => Pages\ListQuestions::route('/'),
+            'create' => Pages\CreateQuestion::route('/create'),
+            'edit' => Pages\EditQuestion::route('/{record}/edit'),
         ];
     }
 
@@ -95,6 +87,7 @@ class LessonResource extends Resource
 
     public static function getNavigationBadgeTooltip(): ?string
     {
-        return 'Total Lessons';
+        return 'Total Questions';
     }
 }
+

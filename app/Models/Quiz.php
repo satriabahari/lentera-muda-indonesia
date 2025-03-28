@@ -2,19 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\Course;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Lesson extends Model
+class Quiz extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'course_id',
         'title',
-        'content',
-        'video_url',
-        'is_active',
+        'status',
     ];
 
     public function course()
