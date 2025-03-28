@@ -24,7 +24,9 @@ class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+
+    protected static ?string $navigationGroup = 'Main';
 
     public static function form(Form $form): Form
     {
@@ -64,11 +66,13 @@ class CourseResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->label("No."),
+                TextColumn::make('No.')
+                    ->rowIndex()
+                    ->alignCenter(),
                 TextColumn::make('title')->searchable(),
                 TextColumn::make('category')->label('Category'),
                 ImageColumn::make('image'),
-                TextColumn::make('status'),
+                TextColumn::make('status')->alignCenter(),
                 TextColumn::make('created_at')->dateTime(),
             ])
             ->filters([
@@ -110,5 +114,15 @@ class CourseResource extends Resource
             'create' => Pages\CreateCourse::route('/create'),
             'edit' => Pages\EditCourse::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'Total Courses';
     }
 }
