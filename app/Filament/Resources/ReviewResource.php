@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ReviewResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ReviewResource\RelationManagers;
+use Filament\Tables\Actions\Action;
 
 class ReviewResource extends Resource
 {
@@ -25,6 +26,7 @@ class ReviewResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-oval-left-ellipsis';
 
     protected static ?string $navigationGroup = 'Main';
+
 
     public static function form(Form $form): Form
     {
@@ -78,6 +80,13 @@ class ReviewResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->emptyStateActions([
+                Action::make('create')
+                    ->label('Create Review')
+                    ->url(route('filament.admin.resources.reviews.create'))
+                    ->icon('heroicon-m-plus')
+                    ->button(),
             ]);
     }
 
