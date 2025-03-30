@@ -21,10 +21,10 @@ class LessonFactory extends Factory
     public function definition(): array
     {
         return [
-            'course_id' => Course::factory(), // Buat course baru atau ambil yang ada
+            'course_id' => Course::factory(),
             'title' => $this->faker->sentence(3),
             'content' => $this->faker->paragraph(),
-            'video_url' => $this->faker->url(),
+            'video_url' => "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
             'is_active' => $this->faker->boolean(50),
         ];
     }
