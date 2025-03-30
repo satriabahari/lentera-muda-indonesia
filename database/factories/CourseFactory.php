@@ -23,8 +23,8 @@ class CourseFactory extends Factory
             'title' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(),
             'category' => $this->faker->randomElement(['mandiri', 'osis']),
-            'status' => $this->faker->randomElement(['Draft', 'Published', 'Archived']),
-            'image' => 'course-images/default.jpg',
+            'status' => $this->faker->randomElement(['draft', 'published', 'archived']),
+            'image' => 'placeholder.png',
         ];
     }
 }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('image')->nullable();
             $table->enum('category', ['mandiri', 'osis'])->default('mandiri');
-            $table->enum('status', ['Draft', 'Published', 'Archived'])->default('Draft');
+            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->timestamps();
         });
     }

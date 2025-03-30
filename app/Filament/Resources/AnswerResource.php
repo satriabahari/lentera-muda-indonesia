@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\AnswerResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\AnswerResource\RelationManagers;
+use Filament\Tables\Columns\IconColumn;
 
 class AnswerResource extends Resource
 {
@@ -22,6 +23,8 @@ class AnswerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
     protected static ?string $navigationGroup = 'Sub Main';
+    protected static ?int $navigationSort = 3;
+
 
     public static function form(Form $form): Form
     {
@@ -48,7 +51,7 @@ class AnswerResource extends Resource
                     ->alignCenter(),
                 TextColumn::make("question.question"),
                 TextColumn::make("answer"),
-                TextColumn::make("is_correct")
+                IconColumn::make("is_correct")->boolean()
             ])
             ->filters([
                 //

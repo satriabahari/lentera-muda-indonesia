@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends Model
@@ -27,5 +28,16 @@ class Course extends Model
             'mandiri' => 'Mandiri',
             'osis' => 'OSIS',
         ];
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($course) {
+            if ($course->image) {
+                Storage::disk('public')->delete($course->image);
+            }
+        });
     }
 }

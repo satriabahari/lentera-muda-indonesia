@@ -10,13 +10,19 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Enums\ActionsPosition;
 use App\Filament\Resources\LessonResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\LessonResource\RelationManagers;
-use Filament\Tables\Columns\IconColumn;
+use Filament\Support\Colors\Color;
 
 class LessonResource extends Resource
 {
@@ -40,6 +46,8 @@ class LessonResource extends Resource
 
                 Textarea::make('content')
                     ->required(),
+
+                TextInput::make('video_url')
             ]);
     }
 
@@ -52,7 +60,29 @@ class LessonResource extends Resource
                     ->alignCenter(),
                 TextColumn::make('course.title')->label('Course'),
                 TextColumn::make('title')->searchable(),
-                TextColumn::make('content'),
+                // ->description(fn(Lesson $record): string => $record->content),
+                TextColumn::make('content')
+                    ->limit(30),
+                TextColumn::make('video_url')
+                    ->limit(30)
+                    ->icon('heroicon-m-video-camera')
+                    ->iconColor(Color::Sky)
+                    ->copyable()
+                    ->copyMessage('Video URL copied')
+                    ->copyMessageDuration(1500)
+                    ->searchable(),
+                // ->wrap(),
+                // ->limit(50)
+                // ->tooltip(function (TextColumn $column): ?string {
+                //     $state = $column->getState();
+
+                //     if (strlen($state) <= $column->getCharacterLimit()) {
+                //         return null;
+                //     }
+
+                //     // Only render the tooltip if the column content exceeds the length limit.
+                //     return $state;
+                // }),
                 IconColumn::make('is_active')
                     ->boolean()
                     ->alignCenter(),
@@ -62,14 +92,22 @@ class LessonResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                    ->button()
+                    ->label('Actions')
+                    ->color(Color::Sky)
+                    ->tooltip('Actions'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->striped();
     }
 
     public static function getRelations(): array
