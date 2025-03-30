@@ -22,6 +22,8 @@ class QuestionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard';
     protected static ?string $navigationGroup = 'Sub Main';
+    protected static ?int $navigationSort = 2;
+
 
     public static function form(Form $form): Form
     {
