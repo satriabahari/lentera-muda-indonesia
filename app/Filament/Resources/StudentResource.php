@@ -24,7 +24,7 @@ class StudentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationGroup = 'Others';
-
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -84,8 +84,12 @@ class StudentResource extends Resource
                     ->searchable(),
 
                 TextColumn::make('email')
-                    ->label('Email')
-                    ->sortable()
+                    ->searchable()
+                    ->icon('heroicon-m-envelope')
+                    ->iconColor('info')
+                    ->copyable()
+                    ->copyMessage('Email address copied')
+                    ->copyMessageDuration(1500)
                     ->searchable(),
 
                 TextColumn::make('role.name')
@@ -93,7 +97,13 @@ class StudentResource extends Resource
                     ->sortable(),
 
                 TextColumn::make('phone')
-                    ->label('Phone'),
+                    ->label('Phone')
+                    ->icon('heroicon-m-phone')
+                    ->iconColor('info')
+                    ->copyable()
+                    ->copyMessage('Phone copied')
+                    ->copyMessageDuration(1500)
+                    ->searchable(),
 
                 TextColumn::make('address')
                     ->label('Home Address')
