@@ -2,27 +2,34 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
 use Filament\Tables;
 use App\Models\Course;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
+use Filament\Forms\Components\Grid;
+use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CourseResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\CourseResource\RelationManagers;
 
 class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
+
+    protected ?string $heading = 'Custom Page Heading';
+
+    protected ?string $subheading = 'Custom Page Subheading';
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
@@ -32,32 +39,39 @@ class CourseResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
+                Section::make()
+                    ->schema([
+                        TextInput::make('title')
+                            ->required()
+                            ->maxLength(255),
 
-                Textarea::make('description')
-                    ->required(),
+                        Textarea::make('description')
+                            ->required(),
+                    ]),
+                Section::make()
+                    ->schema([
+                        Select::make('category')
+                            ->options([
+                                'mandiri' => 'Mandiri',
+                                'osis' => 'OSIS',
+                            ])
+                            ->required(),
 
+                        Select::make('status')
+                            ->options([
+                                'draft' => 'Draft',
+                                'published' => 'Published',
+                                'archived' => 'Archived',
+                            ])
+                            ->default('Draft')
+                            ->required(),
+                    ]),
                 FileUpload::make('image')
+                    ->directory('courses')
+                    ->disk('public')
                     ->image()
-                    ->directory('course-images')
-                    ->required(),
-
-                Select::make('category')
-                    ->options([
-                        'mandiri' => 'Mandiri',
-                        'osis' => 'OSIS',
-                    ])
-                    ->required(),
-
-                Select::make('status')
-                    ->options([
-                        'Draft' => 'Draft',
-                        'Published' => 'Published',
-                        'Archived' => 'Archived',
-                    ])
-                    ->default('Draft')
+                    ->visibility('public')
+                    ->maxSize(2048)
                     ->required(),
             ]);
     }
@@ -70,10 +84,37 @@ class CourseResource extends Resource
                     ->rowIndex()
                     ->alignCenter(),
                 TextColumn::make('title')->searchable(),
-                TextColumn::make('category')->label('Category'),
-                ImageColumn::make('image'),
-                TextColumn::make('status')->alignCenter(),
-                TextColumn::make('created_at')->dateTime(),
+                TextColumn::make('category')
+                    ->label('Category')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'mandiri' => 'info',
+                        'osis' => 'warning',
+                    })
+                    ->alignCenter(),
+                ImageColumn::make('image')
+                    ->disk('public')
+                    ->defaultImageUrl(url('/images/placeholder.png'))
+                    ->square(),
+                TextColumn::make('status')
+                    ->badge()
+                    ->icon(fn(string $state): string => match ($state) {
+                        'draft' => 'heroicon-m-pencil', // ✏️ Ikon untuk draft
+                        'archived' => 'heroicon-m-archive-box', // 📦 Ikon untuk archived
+                        'published' => 'heroicon-m-check-circle', // ✅ Ikon untuk published
+                    })
+                    ->color(fn(string $state): string => match ($state) {
+                        'draft' => 'info',
+                        'archived' => 'warning',
+                        'published' => 'success',
+                    })
+                    ->alignCenter(),
+                TextColumn::make("created_at")
+                    ->dateTime('d M Y, H:i')
+                    ->sortable(),
+                TextColumn::make("updated_at")
+                    ->dateTime('d M Y, H:i')
+                    ->sortable(),
             ])
             ->filters([
                 SelectFilter::make("category")
@@ -88,16 +129,38 @@ class CourseResource extends Resource
                         'Published' => 'Published',
                         'Archived' => 'Archived',
                     ])
-            ])
+                    ->multiple(),
+
+            ],)
+            ->filtersTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Filter'),
+            )
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                    ->button()
+                    ->label('Actions')
+                    ->color(Color::Sky)
+                    ->tooltip('Actions'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateActions([
+                Action::make('create')
+                    ->label('Create post')
+                    ->url(route('filament.admin.resources.courses.create'))
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
+            ->striped();
     }
 
     public static function getRelations(): array
