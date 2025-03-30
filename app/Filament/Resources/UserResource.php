@@ -26,7 +26,7 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
     protected static ?string $navigationGroup = 'Others';
-
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -68,6 +68,11 @@ class UserResource extends Resource
                 TextColumn::make("name")
                     ->searchable(),
                 TextColumn::make("email")
+                    ->icon('heroicon-m-envelope')
+                    ->iconColor('info')
+                    ->copyable()
+                    ->copyMessage('Email address copied')
+                    ->copyMessageDuration(1500)
                     ->searchable(),
                 // TextColumn::make("role")
                 //     ->sortable(),
