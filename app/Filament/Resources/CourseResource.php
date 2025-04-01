@@ -21,6 +21,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Forms\Components\ToggleButtons;
 use App\Filament\Resources\CourseResource\Pages;
 
 class CourseResource extends Resource
@@ -39,40 +40,71 @@ class CourseResource extends Resource
     {
         return $form
             ->schema([
-                Section::make()
+                Grid::make()
+                    ->columns(2)
                     ->schema([
-                        TextInput::make('title')
-                            ->required()
-                            ->maxLength(255),
+                        Section::make()
+                            ->columnSpan(1)
+                            ->schema([
+                                TextInput::make('title')
+                                    ->required()
+                                    ->maxLength(255),
 
-                        Textarea::make('description')
-                            ->required(),
-                    ]),
-                Section::make()
-                    ->schema([
-                        Select::make('category')
-                            ->options([
-                                'mandiri' => 'Mandiri',
-                                'osis' => 'OSIS',
+                                Textarea::make('description')
+                                    ->rows(8)
+                                    ->required(),
+                            ]),
+                        Grid::make()
+                            ->columnSpan(1)
+                            ->schema([
+                                Section::make()
+                                    ->columns(2)
+                                    ->schema([
+                                        ToggleButtons::make('category')
+                                            ->options([
+                                                'mandiri' => 'Mandiri',
+                                                'osis' => 'Osis',
+                                            ])
+                                            ->icons([
+                                                'mandiri' => 'heroicon-o-pencil',
+                                                'osis' => 'heroicon-o-clock',
+                                            ])
+                                            ->colors([
+                                                'mandiri' => 'info',
+                                                'osis' => 'warning',
+                                            ])
+                                            ->required(),
+                                        ToggleButtons::make('status')
+                                            ->options([
+                                                'draft' => 'Draft',
+                                                'archived' => 'Archived',
+                                                'published' => 'Published'
+                                            ])
+                                            ->icons([
+                                                'draft' => 'heroicon-o-pencil',
+                                                'archived' => 'heroicon-o-clock',
+                                                'published' => 'heroicon-o-check-circle',
+                                            ])
+                                            ->colors([
+                                                'draft' => 'info',
+                                                'archived' => 'warning',
+                                                'published' => 'success',
+                                            ])
+                                            ->default('Draft')
+                                            ->required(),
+                                    ]),
+                                Section::make()
+                                    ->schema([
+                                        FileUpload::make('image')
+                                            ->directory('courses')
+                                            ->disk('public')
+                                            ->image()
+                                            ->visibility('public')
+                                            ->maxSize(2048)
+                                            ->required(),
+                                    ])
                             ])
-                            ->required(),
-
-                        Select::make('status')
-                            ->options([
-                                'draft' => 'Draft',
-                                'published' => 'Published',
-                                'archived' => 'Archived',
-                            ])
-                            ->default('Draft')
-                            ->required(),
-                    ]),
-                FileUpload::make('image')
-                    ->directory('courses')
-                    ->disk('public')
-                    ->image()
-                    ->visibility('public')
-                    ->maxSize(2048)
-                    ->required(),
+                    ])
             ]);
     }
 
@@ -99,9 +131,9 @@ class CourseResource extends Resource
                 TextColumn::make('status')
                     ->badge()
                     ->icon(fn(string $state): string => match ($state) {
-                        'draft' => 'heroicon-m-pencil', // ✏️ Ikon untuk draft
-                        'archived' => 'heroicon-m-archive-box', // 📦 Ikon untuk archived
-                        'published' => 'heroicon-m-check-circle', // ✅ Ikon untuk published
+                        'draft' => 'heroicon-m-pencil',
+                        'archived' => 'heroicon-m-archive-box',
+                        'published' => 'heroicon-m-check-circle',
                     })
                     ->color(fn(string $state): string => match ($state) {
                         'draft' => 'info',
@@ -155,7 +187,7 @@ class CourseResource extends Resource
             ])
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Create post')
+                    ->label('Create Course')
                     ->url(route('filament.admin.resources.courses.create'))
                     ->icon('heroicon-m-plus')
                     ->button(),
