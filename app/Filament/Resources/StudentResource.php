@@ -8,6 +8,7 @@ use App\Models\Student;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\StudentResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\StudentResource\RelationManagers;
+use Filament\Tables\Actions\ActionGroup;
 
 class StudentResource extends Resource
 {
@@ -35,6 +37,10 @@ class StudentResource extends Resource
                     ->required()
                     ->maxLength(255),
 
+                Textarea::make('address')
+                    ->label('Home Address')
+                    ->rows(2),
+
                 TextInput::make('email')
                     ->label('Email Address')
                     ->email()
@@ -51,15 +57,14 @@ class StudentResource extends Resource
                 Select::make('role_id')
                     ->label('Role')
                     ->relationship('role', 'name')
+                    ->disabled()
+                    ->hidden()
                     ->required(),
 
                 TextInput::make('phone')
                     ->label('Phone Number')
                     ->tel(),
 
-                Textarea::make('address')
-                    ->label('Home Address')
-                    ->rows(2),
 
                 TextInput::make('school_name')
                     ->label('School Name')
@@ -130,8 +135,15 @@ class StudentResource extends Resource
                     ->relationship('role', 'name'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                    ->button()
+                    ->label('Actions')
+                    ->color(Color::Sky)
+                    ->tooltip('Actions'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
