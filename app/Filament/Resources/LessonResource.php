@@ -8,7 +8,10 @@ use App\Models\Lesson;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
+use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
@@ -17,12 +20,14 @@ use Filament\Tables\Columns\ViewColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Enums\ActionsPosition;
+use Filament\Forms\Components\ToggleButtons;
+use Filament\Forms\Components\MarkdownEditor;
 use App\Filament\Resources\LessonResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\LessonResource\RelationManagers;
-use Filament\Support\Colors\Color;
 
 class LessonResource extends Resource
 {
@@ -36,18 +41,34 @@ class LessonResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('course_id')
-                    ->relationship("course", "title")
-                    ->required(),
+                Section::make()
+                    ->schema([
+                        TextInput::make('title')
+                            ->required()
+                            ->maxLength(255),
 
-                TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
+                        Select::make('course_id')
+                            ->relationship("course", "title")
+                            ->required(),
 
-                Textarea::make('content')
-                    ->required(),
+                        TextInput::make('video_url')
+                            ->label('Video URL')
+                            ->url(),
 
-                TextInput::make('video_url')
+                        ToggleButtons::make('is_active')
+                            ->boolean()
+                            ->inline()
+                            ->grouped()
+                            ->required(),
+                    ])
+                    ->columns(2),
+                Section::make()
+                    ->schema([
+                        MarkdownEditor::make('content')
+                            ->required()
+                            ->columnSpan(2),
+                    ])
+
             ]);
     }
 
@@ -89,7 +110,15 @@ class LessonResource extends Resource
                 TextColumn::make('created_at')->dateTime(),
             ])
             ->filters([
-                //
+                SelectFilter::make("course.title")
+                    ->relationship("course", "title")
+                    ->searchable()
+                    ->multiple(),
+                SelectFilter::make("is_active")
+                    ->options([
+                        '1' => 'True',
+                        '0' => 'False',
+                    ]),
             ])
             ->actions([
                 ActionGroup::make([
@@ -106,6 +135,13 @@ class LessonResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->emptyStateActions([
+                Action::make('create')
+                    ->label('Create Lesson')
+                    ->url(route('filament.admin.resources.lessons.create'))
+                    ->icon('heroicon-m-plus')
+                    ->button(),
             ])
             ->striped();
     }
