@@ -8,10 +8,14 @@ use App\Models\Question;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\ToggleButtons;
 use App\Filament\Resources\QuestionResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\QuestionResource\RelationManagers;
@@ -29,14 +33,53 @@ class QuestionResource extends Resource
     {
         return $form
             ->schema([
-                Select::make("quiz_id")
-                    ->relationship("quiz", "title")
-                    ->required(),
-                TextInput::make("question"),
-                Select::make('type')
-                    ->options([
-                        "multiple_choice" => "Multiple Choice",
-                        "essay" => "Essay",
+                // Select::make("quiz_id")
+                //     ->relationship("quiz", "title")
+                //     ->required(),
+
+                // TextInput::make("question")
+                //     ->required(),
+
+                // ToggleButtons::make('type')
+                //     ->options([
+                //         'multiple_choice' => 'Multiple Choice',
+                //         'essay' => 'Essay',
+                //     ])
+                //     ->icons([
+                //         'multiple_choice' => 'heroicon-o-pencil',
+                //         'essay' => 'heroicon-o-clock',
+                //     ])
+                //     ->colors([
+                //         'multiple_choice' => 'info',
+                //         'essay' => 'warning',
+                //     ])
+                //     ->inline()
+                //     ->required(),
+                Section::make()
+                    ->columns(2)
+                    ->schema([
+                        Select::make("quiz_id")
+                            ->relationship("quiz", "title")
+                            ->required(),
+
+                        TextInput::make("question")
+                            ->required(),
+
+                        ToggleButtons::make('type')
+                            ->options([
+                                'multiple_choice' => 'Multiple Choice',
+                                'essay' => 'Essay',
+                            ])
+                            ->icons([
+                                'multiple_choice' => 'heroicon-o-pencil',
+                                'essay' => 'heroicon-o-clock',
+                            ])
+                            ->colors([
+                                'multiple_choice' => 'info',
+                                'essay' => 'warning',
+                            ])
+                            ->inline()
+                            ->required(),
                     ])
             ]);
     }
@@ -57,7 +100,15 @@ class QuestionResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                    ->button()
+                    ->label('Actions')
+                    ->color(Color::Sky)
+                    ->tooltip('Actions'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -92,4 +143,3 @@ class QuestionResource extends Resource
         return 'Total Questions';
     }
 }
-
