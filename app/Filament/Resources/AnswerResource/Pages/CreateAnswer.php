@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateAnswer extends CreateRecord
 {
     protected static string $resource = AnswerResource::class;
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->string('title');
-            $table->enum("status", ["Draft", "Published", "Archived"])->default("Draft");
+            $table->enum("status", ["draft", "published", "archived"])->default("draft");
             $table->timestamps();
         });
     }

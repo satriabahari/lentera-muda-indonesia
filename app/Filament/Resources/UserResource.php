@@ -10,10 +10,13 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Components\DateTimePicker;
 use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -36,22 +39,44 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->placeholder('Masukkan nama lengkap'),
+
                 TextInput::make("email")
                     ->email()
                     ->required()
                     ->unique(User::class, 'email')
                     ->placeholder('Masukkan email'),
+
                 TextInput::make("password")
                     ->password()
                     ->required()
                     ->minLength(8)
                     ->placeholder('Masukkan password'),
+
                 Select::make('role_id')
                     ->relationship("role", "name")
                     ->required(),
+
+                // ToggleButtons::make('role_id')
+                //     ->label("Role")
+                //     ->relationship("role", "name")
+                //     ->icons([
+                //         'peserta' => 'heroicon-o-pencil',
+                //         'guru' => 'heroicon-o-clock',
+                //         'admin' => 'heroicon-o-check-circle',
+                //         'super_admin' => 'heroicon-o-check-circle',
+                //     ])
+                //     ->colors([
+                //         'peserta' => 'info',
+                //         'guru' => 'warning',
+                //         'admin' => 'success',
+                //         'super_admin' => 'success',
+                //     ])
+                //     ->required(),
+
                 DateTimePicker::make('created_at')
                     ->label('Dibuat Pada')
                     ->disabled(),
+
                 DateTimePicker::make('updated_at')
                     ->label('Diperbarui Pada')
                     ->disabled(),
@@ -92,8 +117,15 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                    ->button()
+                    ->label('Actions')
+                    ->color(Color::Sky)
+                    ->tooltip('Actions'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

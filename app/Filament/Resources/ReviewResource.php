@@ -8,16 +8,19 @@ use App\Models\Review;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
+use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ReviewResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ReviewResource\RelationManagers;
-use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
 
 class ReviewResource extends Resource
 {
@@ -63,18 +66,45 @@ class ReviewResource extends Resource
                 TextColumn::make('No.')
                     ->rowIndex()
                     ->alignCenter(),
-                TextColumn::make('course.title')->label('Course'),
-                TextColumn::make('user.name')->label('User'),
-                TextColumn::make('rating')->sortable()->alignCenter(),
-                TextColumn::make('comment')->limit(50),
+                TextColumn::make('course.title')
+                    ->label('Course')
+                    ->searchable(),
+                TextColumn::make('user.name')
+                    ->label('User'),
+                TextColumn::make('rating')
+                    ->sortable()
+                    ->alignCenter(),
+                TextColumn::make('comment')
+                    ->limit(50)
+                    ->searchable(),
                 TextColumn::make('created_at')->dateTime(),
             ])
             ->filters([
-                //
+                SelectFilter::make("course.title")
+                    ->relationship("course", "title"),
+                SelectFilter::make("user.name")
+                    ->relationship("user", "name"),
+                SelectFilter::make("rating")
+                    ->options([
+                        1 => '⭐',
+                        2 => '⭐⭐',
+                        3 => '⭐⭐⭐',
+                        4 => '⭐⭐⭐⭐',
+                        5 => '⭐⭐⭐⭐⭐',
+                    ])
+                    ->searchable()
+                    ->multiple()
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                    ->button()
+                    ->label('Actions')
+                    ->color(Color::Sky)
+                    ->tooltip('Actions'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -87,7 +117,8 @@ class ReviewResource extends Resource
                     ->url(route('filament.admin.resources.reviews.create'))
                     ->icon('heroicon-m-plus')
                     ->button(),
-            ]);
+            ])
+            ->striped();
     }
 
     public static function getRelations(): array
