@@ -19,6 +19,7 @@ use App\Filament\Resources\StudentResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\StudentResource\RelationManagers;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\Action;
 
 class StudentResource extends Resource
 {
@@ -99,6 +100,7 @@ class StudentResource extends Resource
 
                 TextColumn::make('role.name')
                     ->label('Role')
+                    ->hidden()
                     ->sortable(),
 
                 TextColumn::make('phone')
@@ -130,10 +132,14 @@ class StudentResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                SelectFilter::make('role_id')
-                    ->label('Role')
-                    ->relationship('role', 'name'),
+                SelectFilter::make('school_name')
+                    ->options(Student::query()->pluck('school_name', 'school_name')->toArray()),
             ])
+            ->filtersTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Filter'),
+            )
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -149,7 +155,15 @@ class StudentResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateActions([
+                Action::make('create')
+                    ->label('Create student')
+                    ->url(route('filament.admin.resources.students.create'))
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
+            ->striped();
     }
 
     public static function getRelations(): array

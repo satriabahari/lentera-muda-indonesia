@@ -9,11 +9,13 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
+use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\ToggleButtons;
 use App\Filament\Resources\QuestionResource\Pages;
@@ -92,13 +94,25 @@ class QuestionResource extends Resource
                     ->rowIndex()
                     ->alignCenter(),
                 TextColumn::make("quiz.title")->label("Quiz"),
-                TextColumn::make("question"),
+                TextColumn::make("question")
+                    ->searchable(),
                 TextColumn::make("type"),
 
             ])
             ->filters([
-                //
+                SelectFilter::make("quiz.title")
+                    ->relationship("quiz", "title"),
+                SelectFilter::make("type")
+                    ->options([
+                        'multiple_choice' => 'Multiple Choice',
+                        'essay' => 'Essay',
+                    ])
             ])
+            ->filtersTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Filter'),
+            )
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -114,7 +128,15 @@ class QuestionResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateActions([
+                Action::make('create')
+                    ->label('Create question')
+                    ->url(route('filament.admin.resources.questions.create'))
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
+            ->striped();
     }
 
     public static function getRelations(): array

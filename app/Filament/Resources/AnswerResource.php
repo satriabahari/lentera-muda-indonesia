@@ -9,12 +9,14 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
+use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\ToggleButtons;
 use App\Filament\Resources\AnswerResource\Pages;
@@ -55,12 +57,24 @@ class AnswerResource extends Resource
                     ->rowIndex()
                     ->alignCenter(),
                 TextColumn::make("question.question"),
-                TextColumn::make("answer"),
+                TextColumn::make("answer")
+                    ->searchable(),
                 IconColumn::make("is_correct")->boolean()
             ])
             ->filters([
-                //
+                SelectFilter::make('question.question')
+                    ->relationship('question', 'question'),
+                SelectFilter::make('is_correct')
+                    ->options([
+                        '1' => 'True',
+                        '0' => 'False',
+                    ]),
             ])
+            ->filtersTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Filter'),
+            )
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -76,7 +90,15 @@ class AnswerResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateActions([
+                Action::make('create')
+                    ->label('Create answer')
+                    ->url(route('filament.admin.resources.answers.create'))
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
+            ->striped();
     }
 
     public static function getRelations(): array

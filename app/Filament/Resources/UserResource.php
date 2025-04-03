@@ -11,10 +11,12 @@ use Filament\Tables\Table;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
+use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Components\DateTimePicker;
@@ -114,8 +116,14 @@ class UserResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                SelectFilter::make("role_id")
+                    ->relationship("role", "name"),
             ])
+            ->filtersTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Filter'),
+            )
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -131,7 +139,15 @@ class UserResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateActions([
+                Action::make('create')
+                    ->label('Create user')
+                    ->url(route('filament.admin.resources.users.create'))
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
+            ->striped();
     }
 
     public static function getRelations(): array

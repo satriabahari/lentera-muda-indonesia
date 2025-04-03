@@ -112,15 +112,18 @@ class LessonResource extends Resource
             ])
             ->filters([
                 SelectFilter::make("course.title")
-                    ->relationship("course", "title")
-                    ->searchable()
-                    ->multiple(),
+                    ->relationship("course", "title"),
                 SelectFilter::make("is_active")
                     ->options([
                         '1' => 'True',
                         '0' => 'False',
                     ]),
             ])
+            ->filtersTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Filter'),
+            )
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -139,7 +142,7 @@ class LessonResource extends Resource
             ])
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Create Lesson')
+                    ->label('Create lesson')
                     ->url(route('filament.admin.resources.lessons.create'))
                     ->icon('heroicon-m-plus')
                     ->button(),
