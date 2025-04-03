@@ -12,7 +12,7 @@ class CourseDetail extends Component
 
     public function mount(Course $course)
     {
-        $this->course = $course->load(['lessons', 'quizzes']);
+        $this->course = $course->load(['lessons', 'quizzes', 'reviews']);
     }
 
 
@@ -21,6 +21,7 @@ class CourseDetail extends Component
         return view('livewire.course-detail', [
             'lessons' => $this->course->lessons,
             'quizzes' => $this->course->quizzes,
+            'reviews' => $this->course->reviews,
         ]);
     }
 }
