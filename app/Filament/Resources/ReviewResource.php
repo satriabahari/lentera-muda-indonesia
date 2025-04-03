@@ -13,14 +13,16 @@ use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\ToggleButtons;
 use App\Filament\Resources\ReviewResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ReviewResource\RelationManagers;
-use Filament\Tables\Actions\ActionGroup;
 
 class ReviewResource extends Resource
 {
@@ -56,6 +58,13 @@ class ReviewResource extends Resource
 
                 Textarea::make('comment')
                     ->required(),
+
+                ToggleButtons::make('is_active')
+                    ->boolean()
+                    ->inline()
+                    ->grouped()
+                    ->columnStart(2)
+                    ->required(),
             ]);
     }
 
@@ -77,6 +86,9 @@ class ReviewResource extends Resource
                 TextColumn::make('comment')
                     ->limit(50)
                     ->searchable(),
+                IconColumn::make('is_active')
+                    ->boolean()
+                    ->alignCenter(),
                 TextColumn::make('created_at')->dateTime(),
             ])
             ->filters([
@@ -91,9 +103,12 @@ class ReviewResource extends Resource
                         3 => '⭐⭐⭐',
                         4 => '⭐⭐⭐⭐',
                         5 => '⭐⭐⭐⭐⭐',
-                    ])
-                    ->searchable()
-                    ->multiple()
+                    ]),
+                SelectFilter::make("is_active")
+                    ->options([
+                        '1' => 'True',
+                        '0' => 'False',
+                    ]),
             ])
             ->actions([
                 ActionGroup::make([
@@ -106,6 +121,11 @@ class ReviewResource extends Resource
                     ->color(Color::Sky)
                     ->tooltip('Actions'),
             ])
+            ->filtersTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Filter'),
+            )
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -113,7 +133,7 @@ class ReviewResource extends Resource
             ])
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Create Review')
+                    ->label('Create review')
                     ->url(route('filament.admin.resources.reviews.create'))
                     ->icon('heroicon-m-plus')
                     ->button(),
