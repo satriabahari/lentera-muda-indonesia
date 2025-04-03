@@ -59,5 +59,8 @@ class User extends Authenticatable implements FilamentUser
         return in_array($this->role_id, [1, 2]);
     }
 
-    
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }
