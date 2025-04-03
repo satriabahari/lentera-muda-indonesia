@@ -16,6 +16,7 @@ use App\Filament\Resources\RoleResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\RoleResource\RelationManagers;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\Action;
 
 class RoleResource extends Resource
 {
@@ -63,7 +64,15 @@ class RoleResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateActions([
+                Action::make('create')
+                    ->label('Create role')
+                    ->url(route('filament.admin.resources.roles.create'))
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
+            ->striped();
     }
 
     public static function getRelations(): array
