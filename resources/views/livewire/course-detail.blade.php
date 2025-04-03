@@ -1,13 +1,25 @@
-<div class="container mx-auto p-6">
-    <h1 class="text-2xl font-bold">{{ $course->title }}</h1>
+<x-app-layout>
+    <div class="p-8 text-gray-100">
+        <img class="rounded-md m-auto w-96" src="{{ Storage::url('/' . $course->image) }}" alt="{{ $course->title }}">
 
-    @if ($course->image)
-        <img src="{{ asset('storage/' . $course->image) }}" alt="{{ $course->title }}" class="w-full h-64 object-cover">
-    @else
-        <div class="w-full h-64 bg-gray-200 flex items-center justify-center text-gray-500">
-            No Image
+        <div class="grid grid-cols-[3fr_1fr]">
+            <div class="space-y-4">
+                <h2 class="text-3xl font-bold">{{ $course->title }}</h2>
+                <p @class([
+                    'rounded-full w-fit px-4 py-1 text-sm text-gray-200 bg-gray-600',
+                    'bg-orange-500' => $course->category === 'osis',
+                    'bg-blue-500' => $course->category === 'mandiri',
+                    'bg-gray-300' => !in_array($course->category, ['osis', 'mandiri']),
+                ])>
+                    {{ $course->category }}
+                </p>
+                <p class="text-base text-gray-300">{{ $course->description }}</p>
+            </div>
+
+            <div class="space-y-4">
+                <livewire:lesson-list :courseId="$course->id" />
+                <livewire:quiz-list :quizzes="$quizzes" />
+            </div>
         </div>
-    @endif
-
-    <p class="text-gray-600 mt-4">{{ $course->description }}</p>
-</div>
+    </div>
+</x-app-layout>
