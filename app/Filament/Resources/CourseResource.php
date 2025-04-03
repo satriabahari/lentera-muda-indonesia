@@ -99,6 +99,7 @@ class CourseResource extends Resource
                                             ->directory('courses')
                                             ->disk('public')
                                             ->image()
+                                            ->imageEditor()
                                             ->visibility('public')
                                             ->maxSize(2048)
                                             ->required(),
@@ -126,6 +127,7 @@ class CourseResource extends Resource
                     ->alignCenter(),
                 ImageColumn::make('image')
                     ->disk('public')
+                    ->visibility('public')
                     ->defaultImageUrl(url('/images/placeholder.png'))
                     ->square(),
                 TextColumn::make('status')
