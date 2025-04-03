@@ -40,4 +40,14 @@ class Course extends Model
             }
         });
     }
+
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class);
+    }
+
+    public function quizzes()
+    {
+        return $this->hasMany(quiz::class);
+    }
 }
