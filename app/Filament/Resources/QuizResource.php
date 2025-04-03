@@ -86,9 +86,7 @@ class QuizResource extends Resource
             ])
             ->filters([
                 SelectFilter::make("course.title")
-                    ->relationship("course", "title")
-                    ->searchable()
-                    ->multiple(),
+                    ->relationship("course", "title"),
                 SelectFilter::make("status")
                     ->options([
                         "draft" => "Draft",
@@ -96,6 +94,11 @@ class QuizResource extends Resource
                         "archived" => "Archived"
                     ])
             ])
+            ->filtersTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Filter'),
+            )
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -114,7 +117,7 @@ class QuizResource extends Resource
             ])
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Create Quiz')
+                    ->label('Create quiz')
                     ->url(route('filament.admin.resources.quizzes.create'))
                     ->icon('heroicon-m-plus')
                     ->button(),
