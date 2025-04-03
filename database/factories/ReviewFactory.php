@@ -24,8 +24,9 @@ class ReviewFactory extends Factory
         return [
             'course_id' => Course::factory(),
             'user_id' => User::factory(),
-            'rating' => $this->faker->numberBetween(1, 5), // Rating dari 1-5
+            'rating' => $this->faker->numberBetween(1, 5),
             'comment' => $this->faker->sentence(),
+            'is_active' => $this->faker->boolean(50),
         ];
     }
 }

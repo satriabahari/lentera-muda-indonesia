@@ -2,7 +2,7 @@
     <div class="p-8 text-gray-100">
         <img class="rounded-md m-auto w-96" src="{{ Storage::url('/' . $course->image) }}" alt="{{ $course->title }}">
 
-        <div class="grid grid-cols-[3fr_1fr]">
+        <div class="grid grid-cols-[3fr_1fr] gap-8">
             <div class="space-y-4">
                 <h2 class="text-3xl font-bold">{{ $course->title }}</h2>
                 <p @class([
@@ -20,6 +20,8 @@
                 <livewire:lesson-list :courseId="$course->id" />
                 <livewire:quiz-list :quizzes="$quizzes" />
             </div>
+
+            <livewire:review-list :reviews="$reviews" />
         </div>
     </div>
 </x-app-layout>

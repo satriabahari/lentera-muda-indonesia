@@ -14,11 +14,6 @@ class CourseList extends Component
         $this->courses = Course::all();
     }
 
-    public function viewDetail($id)
-    {
-        return redirect()->route("course.show", $id);
-    }
-
     public function render()
     {
         return view('livewire.course-list')->with([
