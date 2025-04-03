@@ -189,7 +189,7 @@ class CourseResource extends Resource
             ])
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Create Course')
+                    ->label('Create course')
                     ->url(route('filament.admin.resources.courses.create'))
                     ->icon('heroicon-m-plus')
                     ->button(),
