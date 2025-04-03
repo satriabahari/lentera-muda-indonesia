@@ -20,6 +20,7 @@ use Filament\Tables\Columns\ViewColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Enums\ActionsPosition;
@@ -64,7 +65,7 @@ class LessonResource extends Resource
                     ->columns(2),
                 Section::make()
                     ->schema([
-                        MarkdownEditor::make('content')
+                        RichEditor::make('content')
                             ->required()
                             ->columnSpan(2),
                     ])
