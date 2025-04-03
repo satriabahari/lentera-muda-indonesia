@@ -16,11 +16,6 @@ class LessonList extends Component
         $this->lessons = $this->course->lessons;
     }
 
-    public function viewDetail($lessonId)
-    {
-        return redirect()->route('lesson.show', [$this->course->id, $lessonId]);
-    }
-
     public function render()
     {
         return view('livewire.lesson-list');
