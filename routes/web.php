@@ -1,8 +1,14 @@
 <?php
 
 use App\Livewire\Counter;
+use App\Livewire\Student;
 use App\Livewire\CourseList;
+use App\Livewire\LessonList;
+use App\Livewire\QuizDetail;
+use App\Livewire\StudentList;
 use App\Livewire\CourseDetail;
+use App\Livewire\LessonDetail;
+use App\Livewire\StudentDetail;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
@@ -15,10 +21,18 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-// Route::get("/course", CourseList::class);
+Route::get('/courses', CourseList::class)->name('course');
 
-Route::get('course', CourseList::class);
+// Route::get('/courses/{courseId}', CourseDetail::class)->name('course.show');
 
-Route::get('/course/{id}', CourseDetail::class)->name('course.show');
+Route::get('/courses/{course}', CourseDetail::class)->name('course.show');
+
+Route::get('/courses/{courseId}/lessons/{lessonId}', LessonDetail::class)->name('lesson.show');
+
+Route::get('/courses/{course}/quiz/{quiz}', QuizDetail::class)->name('quiz.show');
+
+Route::get('students', StudentList::class)->name('student');
+
+Route::get('/students/{studentId}', StudentDetail::class)->name('student.show');
 
 require __DIR__ . '/auth.php';
