@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Role extends Model
+class Certificate extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'course_id',
         'name',
+        'image',
     ];
 
-    public function users()
+    public function course()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(Course::class);
     }
 }

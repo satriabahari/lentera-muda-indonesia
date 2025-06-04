@@ -14,21 +14,9 @@ class Course extends Model
         'title',
         'description',
         'image',
-        'category',
-        'status',
+        'student_type_id',
+        'is_active',
     ];
-
-    protected $casts = [
-        'category' => 'string',
-    ];
-
-    public static function categories(): array
-    {
-        return [
-            'mandiri' => 'Mandiri',
-            'osis' => 'OSIS',
-        ];
-    }
 
     protected static function boot()
     {
@@ -54,5 +42,20 @@ class Course extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function certificates()
+    {
+        return $this->hasOne(Certificate::class);
+    }
+
+    public function studentType()
+    {
+        return $this->belongsTo(StudentType::class);
+    }
+
+    public function courseCompletion()
+    {
+        return $this->hasMany(CourseCompletion::class);
     }
 }
