@@ -54,13 +54,28 @@ class User extends Authenticatable implements FilamentUser
         return $this->belongsTo(Role::class);
     }
 
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return in_array($this->role_id, [1, 2]);
-    }
-
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function studentProfile()
+    {
+        return $this->hasOne(StudentProfile::class);
+    }
+
+    public function studentAnswer()
+    {
+        return $this->hasMany(StudentAnswer::class);
+    }
+
+    public function courseCompletion()
+    {
+        return $this->hasMany(CourseCompletion::class);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return in_array($this->role_id, [1, 2]);
     }
 }

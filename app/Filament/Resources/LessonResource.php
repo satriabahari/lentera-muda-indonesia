@@ -36,7 +36,7 @@ class LessonResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
-    protected static ?string $navigationGroup = 'Main';
+    protected static ?string $navigationGroup = 'Content Management';
 
     public static function form(Form $form): Form
     {
@@ -88,7 +88,7 @@ class LessonResource extends Resource
                 TextColumn::make('video_url')
                     ->limit(30)
                     ->icon('heroicon-m-video-camera')
-                    ->iconColor(Color::Sky)
+                    ->color('primary')
                     ->copyable()
                     ->copyMessage('Video URL copied')
                     ->copyMessageDuration(1500)
@@ -108,7 +108,12 @@ class LessonResource extends Resource
                 IconColumn::make('is_active')
                     ->boolean()
                     ->alignCenter(),
-                TextColumn::make('created_at')->dateTime(),
+                TextColumn::make("created_at")
+                    ->dateTime('d M Y, H:i')
+                    ->sortable(),
+                TextColumn::make("updated_at")
+                    ->dateTime('d M Y, H:i')
+                    ->sortable(),
             ])
             ->filters([
                 SelectFilter::make("course.title")
@@ -132,7 +137,7 @@ class LessonResource extends Resource
                 ])
                     ->button()
                     ->label('Actions')
-                    ->color(Color::Sky)
+                    ->color('primary')
                     ->tooltip('Actions'),
             ])
             ->bulkActions([
@@ -142,7 +147,7 @@ class LessonResource extends Resource
             ])
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Create lesson')
+                    ->label('Create Lesson')
                     ->url(route('filament.admin.resources.lessons.create'))
                     ->icon('heroicon-m-plus')
                     ->button(),

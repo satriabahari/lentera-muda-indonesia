@@ -1,16 +1,16 @@
-<div>
-    <h2 class="text-3xl font-bold mb-4">Reviews</h2>
+<div class="w-full">
+    <h2 class="text-2xl font-bold my-6">Reviews</h2>
 
-    @foreach ($reviews as $review)
-    {{-- @if($revies->) --}}
-
-    {{-- @endif --}}
-        <div class="bg-gray-800 rounded-md px-4 py-2 mb-4">
-            <div>
-                <strong>{{ $review->user->name }}</strong>:
+    @forelse ($reviews as $review)
+        <div class="bg-neutral-100 grid grid-cols-[0.5fr_2fr] rounded-md p-4 mb-4">
+            <div class="flex justify-center flex-col">
+                <p>{{ $review->user->name }}</p>
                 {!! str_repeat('⭐', $review->rating) !!}
             </div>
+
             <p>{{ $review->comment }}</p>
         </div>
-    @endforeach
+    @empty
+        <p>No lessons available.</p>
+    @endforelse
 </div>

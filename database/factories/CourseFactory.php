@@ -17,6 +17,11 @@ class CourseFactory extends Factory
      */
     protected $model = Course::class;
 
+    protected function withFaker()
+    {
+        return \Faker\Factory::create('id_ID');
+    }
+
     public function definition(): array
     {
         return [

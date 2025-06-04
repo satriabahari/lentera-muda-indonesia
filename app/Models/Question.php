@@ -11,8 +11,8 @@ class Question extends Model
 
     protected $fillable = [
         'quiz_id',
-        'question',
-        'type',
+        'question_text',
+        'is_active',
     ];
 
     public function quiz()
@@ -20,8 +20,8 @@ class Question extends Model
         return $this->belongsTo(Quiz::class);
     }
 
-    public function answer()
+    public function studentAnswer()
     {
-        return $this->belongsTo(Answer::class);
+        return $this->hasMany(StudentAnswer::class);
     }
 }

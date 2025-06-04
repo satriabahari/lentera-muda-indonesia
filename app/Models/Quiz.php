@@ -13,7 +13,7 @@ class Quiz extends Model
     protected $fillable = [
         'course_id',
         'title',
-        'status',
+        'is_active',
     ];
 
     public function course()

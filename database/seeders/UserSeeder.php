@@ -15,38 +15,52 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // Super Admin
+        User::create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@gmail.com',
+            'password' => Hash::make('password'),
+            'role_id' => 1,
+            "created_at" => now(),
+            "updated_at" => now(),
+        ]);
+
+        // Admin
+        User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('password'),
+            'role_id' => 2,
+            "created_at" => now(),
+            "updated_at" => now(),
+        ]);
+
+        // 3 Students
         User::insert([
             [
-                'name' => 'Guru User',
-                'email' => 'guru@gmail.com',
+                'name' => 'Student One',
+                'email' => 'student1@gmail.com',
                 'password' => Hash::make('password'),
                 'role_id' => 3,
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10),
-                'created_at' => now(),
-                'updated_at' => now(),
+                "created_at" => now(),
+                "updated_at" => now(),
             ],
             [
-                'name' => 'Admin User',
-                'email' => 'admin@gmail.com',
+                'name' => 'Student Two',
+                'email' => 'student2@gmail.com',
                 'password' => Hash::make('password'),
-                'role_id' => 2,
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10),
-                'created_at' => now(),
-                'updated_at' => now(),
+                'role_id' => 3,
+                "created_at" => now(),
+                "updated_at" => now(),
             ],
             [
-                'name' => 'Super Admin User',
-                'email' => 'super@gmail.com',
+                'name' => 'Student Three',
+                'email' => 'student3@gmail.com',
                 'password' => Hash::make('password'),
-                'role_id' => 1,
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10),
-                'created_at' => now(),
-                'updated_at' => now(),
+                'role_id' => 3,
+                "created_at" => now(),
+                "updated_at" => now(),
             ],
-
         ]);
     }
 }

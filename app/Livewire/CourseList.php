@@ -7,16 +7,10 @@ use Livewire\Component;
 
 class CourseList extends Component
 {
-    public $courses;
-
-    public function mount()
-    {
-        $this->courses = Course::all();
-    }
 
     public function render()
     {
-        return view('livewire.course-list')->with([
+        return view('livewire.course-list', [
             'courses' => Course::all()
         ]);
     }

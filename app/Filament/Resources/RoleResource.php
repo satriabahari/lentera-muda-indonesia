@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use App\Models\Role;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -24,16 +25,14 @@ class RoleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
-    protected static ?string $navigationGroup = 'Others';
+    protected static ?string $navigationGroup = 'User Access';
     protected static ?int $navigationSort = 3;
-
-
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make("name")
+                TextInput::make("name"),
             ]);
     }
 
@@ -41,10 +40,16 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make("No.")
+                TextColumn::make("No")
                     ->rowIndex()
                     ->alignCenter(),
                 TextColumn::make("name")->searchable(),
+                TextColumn::make("created_at")
+                    ->dateTime('d M Y, H:i')
+                    ->sortable(),
+                TextColumn::make("updated_at")
+                    ->dateTime('d M Y, H:i')
+                    ->sortable(),
             ])
             ->filters([
                 //
@@ -57,7 +62,7 @@ class RoleResource extends Resource
                 ])
                     ->button()
                     ->label('Actions')
-                    ->color(Color::Sky)
+                    ->color('primary')
                     ->tooltip('Actions'),
             ])
             ->bulkActions([
@@ -67,7 +72,7 @@ class RoleResource extends Resource
             ])
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Create role')
+                    ->label('Create Role')
                     ->url(route('filament.admin.resources.roles.create'))
                     ->icon('heroicon-m-plus')
                     ->button(),

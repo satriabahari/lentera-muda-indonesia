@@ -2,6 +2,9 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\CourseCompletion;
+use App\Models\Lesson;
+use App\Models\Quiz;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Review;
@@ -23,21 +26,21 @@ class StatsOverview extends BaseWidget
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->chart([7, 2, 10, 3, 15, 4, 17])
                 ->color('success'),
-            Stat::make('Student', Student::count())
-                ->description('32k increase')
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->chart([7, 2, 10, 3, 15, 4, 17])
-                ->color('warning'),
             Stat::make('Course', Course::count())
                 ->description('32k increase')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->chart([7, 2, 10, 3, 15, 4, 17])
                 ->color('info'),
-            Stat::make('Review', Review::count())
+            Stat::make('Lesson', Lesson::count())
                 ->description('32k increase')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->chart([7, 2, 10, 3, 15, 4, 17])
                 ->color('danger'),
+            Stat::make('Course Completions', CourseCompletion::count())
+                ->description('32k increase')
+                ->descriptionIcon('heroicon-m-arrow-trending-up')
+                ->chart([7, 2, 10, 3, 15, 4, 17])
+                ->color('warning'),
         ];
     }
 }

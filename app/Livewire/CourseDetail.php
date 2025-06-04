@@ -15,7 +15,6 @@ class CourseDetail extends Component
         $this->course = $course->load(['lessons', 'quizzes', 'reviews']);
     }
 
-
     public function render()
     {
         return view('livewire.course-detail', [
