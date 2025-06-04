@@ -14,16 +14,17 @@ use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Forms\Components\ToggleButtons;
 use App\Filament\Resources\QuizResource\Pages;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Forms\Components\ToggleButtons;
+use Filament\Tables\Columns\IconColumn;
 
 class QuizResource extends Resource
 {
     protected static ?string $model = Quiz::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
-    protected static ?string $navigationGroup = 'Sub Main';
+    protected static ?string $navigationGroup = 'Content Management';
     protected static ?int $navigationSort = 1;
 
 
@@ -39,22 +40,10 @@ class QuizResource extends Resource
                         Select::make("course_id")
                             ->relationship("course", "title")
                             ->required(),
-                        ToggleButtons::make('status')
-                            ->options([
-                                'draft' => 'Draft',
-                                'archived' => 'Archived',
-                                'published' => 'Published'
-                            ])
-                            ->icons([
-                                'draft' => 'heroicon-o-pencil',
-                                'archived' => 'heroicon-o-clock',
-                                'published' => 'heroicon-o-check-circle',
-                            ])
-                            ->colors([
-                                'draft' => 'info',
-                                'archived' => 'warning',
-                                'published' => 'success',
-                            ])
+                        ToggleButtons::make('is_active')
+                            ->boolean()
+                            ->inline()
+                            ->grouped()
                             ->required(),
                     ])
                     ->columns(2)
@@ -70,29 +59,24 @@ class QuizResource extends Resource
                     ->alignCenter(),
                 TextColumn::make('title')->searchable(),
                 TextColumn::make("course.title")->label("Course"),
-                TextColumn::make('status')
-                    ->badge()
-                    ->icon(fn(string $state): string => match ($state) {
-                        'draft' => 'heroicon-m-pencil',
-                        'archived' => 'heroicon-m-archive-box',
-                        'published' => 'heroicon-m-check-circle',
-                    })
-                    ->color(fn(string $state): string => match ($state) {
-                        'draft' => 'info',
-                        'archived' => 'warning',
-                        'published' => 'success',
-                    })
-                    ->alignCenter()
+                IconColumn::make('is_active')
+                    ->boolean()
+                    ->alignCenter(),
+                TextColumn::make("created_at")
+                    ->dateTime('d M Y, H:i')
+                    ->sortable(),
+                TextColumn::make("updated_at")
+                    ->dateTime('d M Y, H:i')
+                    ->sortable(),
             ])
             ->filters([
                 SelectFilter::make("course.title")
                     ->relationship("course", "title"),
-                SelectFilter::make("status")
+                SelectFilter::make("is_active")
                     ->options([
-                        "draft" => "Draft",
-                        "published" => "Published",
-                        "archived" => "Archived"
-                    ])
+                        '1' => 'True',
+                        '0' => 'False',
+                    ]),
             ])
             ->filtersTriggerAction(
                 fn(Action $action) => $action
@@ -107,7 +91,7 @@ class QuizResource extends Resource
                 ])
                     ->button()
                     ->label('Actions')
-                    ->color(Color::Sky)
+                    ->color('primary')
                     ->tooltip('Actions'),
             ])
             ->bulkActions([
@@ -117,7 +101,7 @@ class QuizResource extends Resource
             ])
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Create quiz')
+                    ->label('Create Quiz')
                     ->url(route('filament.admin.resources.quizzes.create'))
                     ->icon('heroicon-m-plus')
                     ->button(),
