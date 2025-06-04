@@ -8,6 +8,7 @@ use App\Livewire\QuizDetail;
 use App\Livewire\StudentList;
 use App\Livewire\CourseDetail;
 use App\Livewire\LessonDetail;
+use App\Livewire\QuizResult;
 use App\Livewire\StudentDetail;
 use Illuminate\Support\Facades\Route;
 
@@ -27,9 +28,11 @@ Route::get('/courses', CourseList::class)->name('course');
 
 Route::get('/courses/{course}', CourseDetail::class)->name('course.show');
 
-Route::get('/courses/{courseId}/lessons/{lessonId}', LessonDetail::class)->name('lesson.show');
+Route::get('/courses/{course}/lessons/{lesson}', LessonDetail::class)->name('lesson.show');
 
 Route::get('/courses/{course}/quiz/{quiz}', QuizDetail::class)->name('quiz.show');
+
+Route::get('/courses/{course}/quiz/{quiz}/result', QuizResult::class)->name('quiz.result');
 
 Route::get('students', StudentList::class)->name('student');
 
