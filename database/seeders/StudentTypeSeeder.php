@@ -2,33 +2,28 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
-use Illuminate\Database\Seeder;
+use App\Models\StudentType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 
-class RoleSeeder extends Seeder
+class StudentTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Role::insert([
+        StudentType::insert([
             [
-                "name" => "super_admin",
+                'name' => 'lentera_course',
                 "created_at" => now(),
                 "updated_at" => now(),
             ],
             [
-                "name" => "admin",
+                'name' => 'lentera_academy',
                 "created_at" => now(),
                 "updated_at" => now(),
             ],
-            [
-                "name" => "student",
-                "created_at" => now(),
-                "updated_at" => now(),
-            ]
         ]);
     }
 }
