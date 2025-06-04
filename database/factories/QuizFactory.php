@@ -21,6 +21,7 @@ class QuizFactory extends Factory
             'course_id' => Course::inRandomOrder()->first()->id ?? 1, // Ambil course_id secara acak
             'title' => $this->faker->sentence(3),
             'status' => $this->faker->randomElement(['Draft', 'Published', 'Archived']),
+            'is_active' => $this->faker->boolean(50),
         ];
     }
 }

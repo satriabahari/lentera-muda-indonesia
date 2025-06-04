@@ -22,7 +22,6 @@ class QuestionFactory extends Factory
         return [
             'quiz_id' => Quiz::inRandomOrder()->first()->id ?? 1, // Ambil quiz_id secara acak
             'question' => $this->faker->sentence(10),
-            'type' => $this->faker->randomElement(['multiple_choice', 'essay']),
         ];
     }
 }
