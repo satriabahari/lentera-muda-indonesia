@@ -30,21 +30,25 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->brandName('Lentera Muda Indonesia')
             ->login()
             ->colors([
-                'primary' => Color::Sky,
+                'primary' => "#38bdf8",
             ])
+            ->font('Onest')
             ->sidebarCollapsibleOnDesktop()
+            ->topNavigation()
+            ->darkMode(false)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
-            ])
+            // ->widgets([
+            //     Widgets\AccountWidget::class,
+            //     Widgets\FilamentInfoWidget::class,
+            // ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -61,13 +65,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 NavigationGroup::make()
-                    ->label('Main')
+                    ->label('Content Management')
                     ->collapsible(false),
                 NavigationGroup::make()
-                    ->label('Sub Main')
+                    ->label('Student Progress')
                     ->collapsible(false),
                 NavigationGroup::make()
-                    ->label('Others')
+                    ->label('User Access')
             ]);
         // ->navigationGroups([
         //     'Main',
