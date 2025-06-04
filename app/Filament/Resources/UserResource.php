@@ -23,14 +23,16 @@ use Filament\Forms\Components\DateTimePicker;
 use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\UserResource\RelationManagers;
+use Filament\Forms\Components\Group as ComponentsGroup;
+use Forms\Components\Group;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $navigationGroup = 'Others';
+    protected static ?string $navigationGroup = 'User Access';
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -39,51 +41,44 @@ class UserResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->required()
-                    ->maxLength(255)
-                    ->placeholder('Masukkan nama lengkap'),
+                    ->maxLength(255),
 
-                TextInput::make("email")
+                TextInput::make('email')
                     ->email()
                     ->required()
-                    ->unique(User::class, 'email')
-                    ->placeholder('Masukkan email'),
+                    ->unique(User::class, 'email'),
 
-                TextInput::make("password")
+                TextInput::make('password')
                     ->password()
-                    ->required()
                     ->minLength(8)
-                    ->placeholder('Masukkan password'),
+                    ->dehydrated(fn($state) => filled($state)) // hanya update jika terisi
+                    ->nullable(),
 
                 Select::make('role_id')
-                    ->relationship("role", "name")
-                    ->required(),
+                    ->relationship('role', 'name')
+                    ->required()
+                    ->live(), // penting agar bisa reactive
 
-                // ToggleButtons::make('role_id')
-                //     ->label("Role")
-                //     ->relationship("role", "name")
-                //     ->icons([
-                //         'peserta' => 'heroicon-o-pencil',
-                //         'guru' => 'heroicon-o-clock',
-                //         'admin' => 'heroicon-o-check-circle',
-                //         'super_admin' => 'heroicon-o-check-circle',
-                //     ])
-                //     ->colors([
-                //         'peserta' => 'info',
-                //         'guru' => 'warning',
-                //         'admin' => 'success',
-                //         'super_admin' => 'success',
-                //     ])
-                //     ->required(),
+                ComponentsGroup::make([
+                    Select::make('studentProfile.student_type_id')
+                        ->label('Tipe Siswa')
+                        ->relationship('studentProfile.studentType', 'name')
+                        ->required(),
 
-                DateTimePicker::make('created_at')
-                    ->label('Dibuat Pada')
-                    ->disabled(),
+                    TextInput::make('studentProfile.address')
+                        ->label('Alamat'),
 
-                DateTimePicker::make('updated_at')
-                    ->label('Diperbarui Pada')
-                    ->disabled(),
+                    TextInput::make('studentProfile.school_name')
+                        ->label('Nama Sekolah'),
+
+                    TextInput::make('studentProfile.school_address')
+                        ->label('Alamat Sekolah'),
+                ])
+                    ->columns(2)
+                    ->visible(fn(Forms\Get $get) => $get('role_id') == 3),
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
@@ -92,25 +87,55 @@ class UserResource extends Resource
                 TextColumn::make('No.')
                     ->rowIndex()
                     ->alignCenter(),
-                TextColumn::make("name")
+
+                TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make("email")
+
+                TextColumn::make('email')
                     ->icon('heroicon-m-envelope')
                     ->iconColor('info')
                     ->copyable()
-                    ->copyMessage('Email address copied')
-                    ->copyMessageDuration(1500)
                     ->searchable(),
-                // TextColumn::make("role")
-                //     ->sortable(),
-                TextColumn::make("role.name"),
-                TextColumn::make("remember_token")
-                    ->hidden(),
-                TextColumn::make("created_at")
+
+                TextColumn::make('role.name'),
+
+                TextColumn::make('studentProfile.studentType.name')
+                    ->label('Student Type')
+                    ->sortable()
+                    ->formatStateUsing(fn($state, $record) => $record->role_id === 3 ? $state : '-')
+                    ->placeholder('-'),
+
+                TextColumn::make('studentProfile.phone')
+                    ->label('Phone')
+                    ->sortable()
+                    ->formatStateUsing(fn($state, $record) => $record->role_id === 3 ? $state : '-')
+                    ->placeholder('-'),
+
+
+                TextColumn::make('studentProfile.address')
+                    ->label('Address')
+                    ->sortable()
+                    ->formatStateUsing(fn($state, $record) => $record->role_id === 3 ? $state : '-')
+                    ->placeholder('-'),
+
+                TextColumn::make('studentProfile.school_name')
+                    ->label('School')
+                    ->sortable()
+                    ->formatStateUsing(fn($state, $record) => $record->role_id === 3 ? $state : '-')
+                    ->placeholder('-'),
+
+                TextColumn::make('studentProfile.school_address')
+                    ->label('School')
+                    ->sortable()
+                    ->formatStateUsing(fn($state, $record) => $record->role_id === 3 ? $state : '-')
+                    ->placeholder('-'),
+
+                TextColumn::make('created_at')
                     ->label('Dibuat Pada')
                     ->dateTime('d M Y, H:i')
                     ->sortable(),
-                TextColumn::make("updated_at")
+
+                TextColumn::make('updated_at')
                     ->label('Diperbarui Pada')
                     ->dateTime('d M Y, H:i')
                     ->sortable(),
@@ -118,6 +143,10 @@ class UserResource extends Resource
             ->filters([
                 SelectFilter::make("role_id")
                     ->relationship("role", "name"),
+                SelectFilter::make("student_type_id")
+                    ->relationship("studentProfile.studentType", "name"),
+                SelectFilter::make("school_name")
+                    ->relationship("studentProfile", "school_name"),
             ])
             ->filtersTriggerAction(
                 fn(Action $action) => $action
@@ -132,7 +161,7 @@ class UserResource extends Resource
                 ])
                     ->button()
                     ->label('Actions')
-                    ->color(Color::Sky)
+                    ->color('primary')
                     ->tooltip('Actions'),
             ])
             ->bulkActions([
@@ -142,13 +171,14 @@ class UserResource extends Resource
             ])
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Create user')
+                    ->label('Create User')
                     ->url(route('filament.admin.resources.users.create'))
                     ->icon('heroicon-m-plus')
                     ->button(),
             ])
             ->striped();
     }
+
 
     public static function getRelations(): array
     {
