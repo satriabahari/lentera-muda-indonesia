@@ -21,13 +21,14 @@ use Filament\Forms\Components\ToggleButtons;
 use App\Filament\Resources\QuestionResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\QuestionResource\RelationManagers;
+use Filament\Tables\Columns\IconColumn;
 
 class QuestionResource extends Resource
 {
     protected static ?string $model = Question::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard';
-    protected static ?string $navigationGroup = 'Sub Main';
+    protected static ?string $navigationGroup = 'Content Management';
     protected static ?int $navigationSort = 2;
 
 
@@ -35,28 +36,6 @@ class QuestionResource extends Resource
     {
         return $form
             ->schema([
-                // Select::make("quiz_id")
-                //     ->relationship("quiz", "title")
-                //     ->required(),
-
-                // TextInput::make("question")
-                //     ->required(),
-
-                // ToggleButtons::make('type')
-                //     ->options([
-                //         'multiple_choice' => 'Multiple Choice',
-                //         'essay' => 'Essay',
-                //     ])
-                //     ->icons([
-                //         'multiple_choice' => 'heroicon-o-pencil',
-                //         'essay' => 'heroicon-o-clock',
-                //     ])
-                //     ->colors([
-                //         'multiple_choice' => 'info',
-                //         'essay' => 'warning',
-                //     ])
-                //     ->inline()
-                //     ->required(),
                 Section::make()
                     ->columns(2)
                     ->schema([
@@ -64,24 +43,16 @@ class QuestionResource extends Resource
                             ->relationship("quiz", "title")
                             ->required(),
 
-                        TextInput::make("question")
+                        TextInput::make("question_text")
+                            ->label("Question")
                             ->required(),
 
-                        ToggleButtons::make('type')
-                            ->options([
-                                'multiple_choice' => 'Multiple Choice',
-                                'essay' => 'Essay',
-                            ])
-                            ->icons([
-                                'multiple_choice' => 'heroicon-o-pencil',
-                                'essay' => 'heroicon-o-clock',
-                            ])
-                            ->colors([
-                                'multiple_choice' => 'info',
-                                'essay' => 'warning',
-                            ])
+                        ToggleButtons::make('is_active')
+                            ->boolean()
                             ->inline()
+                            ->grouped()
                             ->required(),
+
                     ])
             ]);
     }
@@ -93,20 +64,31 @@ class QuestionResource extends Resource
                 TextColumn::make("No.")
                     ->rowIndex()
                     ->alignCenter(),
-                TextColumn::make("quiz.title")->label("Quiz"),
-                TextColumn::make("question")
+                TextColumn::make("quiz.title")
+                    ->label("Quiz")
                     ->searchable(),
-                TextColumn::make("type"),
 
+                TextColumn::make("question_text")
+                    ->label("Question")
+                    ->searchable(),
+                IconColumn::make('is_active')
+                    ->boolean()
+                    ->alignCenter(),
+                TextColumn::make("created_at")
+                    ->dateTime('d M Y, H:i')
+                    ->sortable(),
+                TextColumn::make("updated_at")
+                    ->dateTime('d M Y, H:i')
+                    ->sortable(),
             ])
             ->filters([
                 SelectFilter::make("quiz.title")
                     ->relationship("quiz", "title"),
-                SelectFilter::make("type")
+                SelectFilter::make("is_active")
                     ->options([
-                        'multiple_choice' => 'Multiple Choice',
-                        'essay' => 'Essay',
-                    ])
+                        '1' => 'True',
+                        '0' => 'False',
+                    ]),
             ])
             ->filtersTriggerAction(
                 fn(Action $action) => $action
@@ -121,7 +103,7 @@ class QuestionResource extends Resource
                 ])
                     ->button()
                     ->label('Actions')
-                    ->color(Color::Sky)
+                    ->color('primary')
                     ->tooltip('Actions'),
             ])
             ->bulkActions([
@@ -131,7 +113,7 @@ class QuestionResource extends Resource
             ])
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Create question')
+                    ->label('Create Question')
                     ->url(route('filament.admin.resources.questions.create'))
                     ->icon('heroicon-m-plus')
                     ->button(),
