@@ -20,7 +20,7 @@ class Question extends Model
         return $this->belongsTo(Quiz::class);
     }
 
-    public function studentAnswer()
+    public function studentAnswers()
     {
         return $this->hasMany(StudentAnswer::class);
     }

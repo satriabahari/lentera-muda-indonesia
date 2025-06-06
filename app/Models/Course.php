@@ -29,6 +29,11 @@ class Course extends Model
         });
     }
 
+    public function studentType()
+    {
+        return $this->belongsTo(StudentType::class);
+    }
+
     public function lessons()
     {
         return $this->hasMany(Lesson::class);
@@ -49,9 +54,9 @@ class Course extends Model
         return $this->hasOne(Certificate::class);
     }
 
-    public function studentType()
+    public function studentAnswers()
     {
-        return $this->belongsTo(StudentType::class);
+        return $this->hasMany(StudentAnswer::class);
     }
 
     public function courseCompletion()

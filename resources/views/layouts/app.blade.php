@@ -18,7 +18,7 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-200">
+    <div class="min-h-screen bg-white">
         <livewire:layout.navigation />
 
         <!-- Page Heading -->
@@ -34,6 +34,8 @@
         <main {{ $attributes->merge(['class' => '']) }}>
             {{ $slot }}
         </main>
+
+        <x-footer />
     </div>
 </body>
 

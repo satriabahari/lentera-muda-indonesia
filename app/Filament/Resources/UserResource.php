@@ -208,6 +208,9 @@ class UserResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return Filament::auth()->user()->role_id === 1;
+
+        $user = Filament::auth()->user();
+
+        return $user && $user->role_id === 1;
     }
 }
