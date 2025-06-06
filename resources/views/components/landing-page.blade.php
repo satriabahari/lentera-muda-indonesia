@@ -1,75 +1,92 @@
-<!-- resources/views/hero.blade.php -->
-<div>
-    <div class=" bg-gray-800 text-white py-12 text-center">
-        <h1 class="text-2xl md:text-3xl font-semibold mb-4">
-            Temukan Potensi Terbaikmu bersama
-            <span class="text-cyan-400 font-bold">Lentera Muda Indonesia</span>
-        </h1>
+<div class="px-16 pt-16">
+    {{-- Hero --}}
+    <section class="relative overflow-hidden py-16 text-center text-cyan-900">
 
-        <p class="text-lg md:text-xl mb-2 flex items-center justify-center gap-2">
-            📘 <span>Belajar. Bertumbuh. Berprestasi.</span> 📘
-        </p>
+        <div
+            class="absolute top-0 left-0 h-screen w-screen bg-[radial-gradient(100%_50%_at_50%_0%,rgba(0,163,255,0.13)_0,rgba(0,163,255,0)_50%,rgba(0,163,255,0)_100%)]">
+        </div>
 
-        <p class="text-sm text-gray-300 mb-6">Since 2025</p>
+        <div class="space-y-4 z-10">
+            <h1 class="text-2xl md:text-4xl font-bold">
+                Bangun Masa Depanmu Bersama
+                <br>
+                <span class="text-cyan-500">Lentera Muda Indonesia</span>
+            </h1>
 
-        <x-primary-button class="bg-cyan-500 dark:bg-cyan-500">
-            Mulai Belajar
-        </x-primary-button>
-    </div>
+            <p class="flex items-center justify-center w-3/5 text-sm m-auto">
+                Belajar. Bertumbuh. Berprestasi. Bersama Lentera Muda Indonesia, kamu akan mendapatkan dukungan,
+                pembelajaran, dan komunitas yang membantumu mengembangkan potensi diri, meraih impian, dan menciptakan
+                masa
+                depan yang lebih cerah.
+            </p>
 
-    <!-- resources/views/components/why-lentera.blade.php -->
-    <section class="bg-[#f0fafd] py-16 px-4">
-        <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-2xl md:text-3xl font-semibold mb-10">
+            <div class="flex justify-center">
+                <div class="flex flex-col items-center text-center space-y-4">
+                    <x-primary-button class="!bg-cyan-500 !text-neutral-100 hover:!bg-cyan-700">
+                        Mulai Perjalananmu
+                    </x-primary-button>
+                    <div class="animate-bounce text-cyan-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- Hero --}}
+
+    {{-- Kenapa Memilih --}}
+    <section class="bg-white py-16">
+        <div class="max-w-6xl mx-auto text-center space-y-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-cyan-900">
                 Kenapa Memilih
-                <span class="text-cyan-600 font-bold">Lentera Muda Indonesia</span>?
+                <br>
+                <span class="text-cyan-500 font-bold">Lentera Muda Indonesia</span>
             </h2>
 
             <div class="grid md:grid-cols-3 gap-6">
-                <!-- Card 1 -->
-                <div class="bg-white border border-cyan-400 rounded-md shadow-md p-6">
-                    <div class="bg-cyan-200 text-cyan-900 p-3 rounded-md flex items-center gap-3 mb-4">
+                <div class="bg-gradient-to-b from-cyan-50 border border-neutral-200 to-white  rounded-md p-4">
+                    <div class=" text-cyan-900 p-3 rounded-md items-center mb-4 flex flex-col gap-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12h6m2 6H7a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2z" />
                         </svg>
-                        <span class="font-semibold">Belajar dengan tujuan, berkembang dengan arah.</span>
+                        <span class="font-bold text-lg">Belajar dengan tujuan, berkembang dengan arah.</span>
                     </div>
-                    <p class="text-sm text-gray-700">
+                    <p class="text-sm text-neutral-500">
                         Kami hadir dengan program terfokus untuk pengembangan OSIS dan persiapan UTBK.
                         Materi kami dibuat sesuai kebutuhan nyata siswa di daerah.
                     </p>
                 </div>
-
-                <!-- Card 2 -->
-                <div class="bg-white border border-cyan-400 rounded-md shadow-md p-6">
-                    <div class="bg-cyan-200 text-cyan-900 p-3 rounded-md flex items-center gap-3 mb-4">
+                <div class="bg-gradient-to-b from-cyan-50 border border-neutral-200 to-white  rounded-md p-4">
+                    <div class=" text-cyan-900 p-3 rounded-md items-center mb-4 flex flex-col gap-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 12l6 6m0-12l-6 6" />
+                                d="M9 12h6m2 6H7a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2z" />
                         </svg>
-                        <span class="font-semibold">Pendidikan berkualitas, tanpa batasan biaya.</span>
+                        <span class="font-bold text-lg">Pendidikan berkualitas, tanpa batasan biaya.</span>
                     </div>
-                    <p class="text-sm text-gray-700">
+                    <p class="text-sm text-neutral-500">
                         Tak perlu khawatir soal biaya. Semua kelas di Lentera Academy dan Lentera Course
                         bisa diakses gratis untuk seluruh siswa.
                     </p>
                 </div>
-
-                <!-- Card 3 -->
-                <div class="bg-white border border-cyan-400 rounded-md shadow-md p-6">
-                    <div class="bg-cyan-200 text-cyan-900 p-3 rounded-md flex items-center gap-3 mb-4">
+                <div class="bg-gradient-to-b from-cyan-50 border border-neutral-200 to-white  rounded-md p-4">
+                    <div class=" text-cyan-900 p-3 rounded-md items-center mb-4 flex flex-col gap-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 17l6-6 4 4 8-8" />
+                                d="M9 12h6m2 6H7a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2z" />
                         </svg>
-                        <span class="font-semibold">Belajar bersama, tumbuh bersama.</span>
+                        <span class="font-bold text-lg">Belajar bersama, tumbuh bersama.</span>
                     </div>
-                    <p class="text-sm text-gray-700">
+                    <p class="text-sm text-neutral-500">
                         Bangun koneksi dengan sesama siswa, dapatkan bimbingan langsung dari mentor berpengalaman,
                         dan tumbuh bersama komunitas inspiratif.
                     </p>
@@ -77,17 +94,16 @@
             </div>
         </div>
     </section>
+    {{-- Kenapa Memilih --}}
 
-    <!-- resources/views/components/about-section.blade.php -->
-    <section class="bg-cyan-200 py-12 px-6">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8">
-            <div class="flex-1">
-                <img src="{{ asset('images/tentang-kami.jpg') }}" alt="Tentang Kami"
-                    class="rounded-lg shadow-lg w-full">
-            </div>
+    {{-- Tentang Kami --}}
+    <section class="bg-white py-16">
+        <div class="w-full mx-auto grid grid-cols-2 items-center gap-8">
+            <x-application-logo class="block w-full fill-current text-neutral-800" />
+
             <div class="flex-1">
                 <h2 class="text-2xl font-semibold mb-4">Tentang Kami</h2>
-                <p class="text-gray-800 mb-4 text-sm leading-relaxed">
+                <p class="text-cyan-900 mb-4 text-sm leading-relaxed">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna aliqua.
                     Nisl tincidunt eget nullam non. Quis hendrerit dolor magna eget est lorem ipsum dolor sit. Volutpat
@@ -100,43 +116,40 @@
             </div>
         </div>
     </section>
+    {{-- Tentang Kami --}}
 
-    <!-- resources/views/components/latest-classes.blade.php -->
-    @livewire('course-list')
+    {{-- Course List --}}
+    <livewire:courses />
+    {{-- Course List --}}
 
-    <section class="bg-cyan-200 py-16">
-        <div class="text-center text-2xl font-semibold text-gray-800 mb-10">Kontak</div>
-        <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8 grid md:grid-cols-3 gap-6 text-sm text-gray-700">
-            <div class="flex items-start gap-3">
-                <div class="text-cyan-500 text-xl">
-                    <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <div>
-                    <div class="font-semibold">Location:</div>
-                    <p>Jambi - Muara Bulian No.KM. 15<br>Mendalo Darat<br>Kec. Jambi Luar Kota<br>Kab. Muaro Jambi<br>Jambi</p>
-                </div>
-            </div>
-            <div class="flex items-start gap-3">
-                <div class="text-cyan-500 text-xl">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <div>
-                    <div class="font-semibold">Email:</div>
-                    <p>namaemail88@gmail.com</p>
-                </div>
-            </div>
-            <div class="flex items-start gap-3">
-                <div class="text-cyan-500 text-xl">
-                    <i class="fas fa-phone-alt"></i>
-                </div>
-                <div>
-                    <div class="font-semibold">Call:</div>
-                    <p>+1 5589 55488 51<br>+1 5589 55488 51</p>
+    {{-- CTA --}}
+    <section class="overflow-hidden rounded-xl py-24 text-center gap-4 my-16 flex justify-center flex-col relative">
+
+        <div
+            class="absolute inset-0 z-1 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#06b6d4_100%)]">
+        </div>
+
+        <div class="z-10 space-y-4">
+            <h1 class="text-4xl font-bold text-cyan-50">Siap Menyalakan <br> Lentera Harapanmu?</h1>
+
+            <p class="text-neutral-200 w-1/2 m-auto
+            ">Wujudkan impian dan potensi terbaikmu bersama
+                komunitas yang
+                mendukungmu
+                untuk terus belajar, bertumbuh, dan
+                menginspirasi.</p>
+
+            <div class="flex justify-center">
+                <div class="flex items-center text-center">
+                    <x-primary-button class="!bg-cyan-500 !text-neutral-100 hover:!bg-cyan-700">
+                        Nyalakan Lentera🔥
+                    </x-primary-button>
+
                 </div>
             </div>
         </div>
     </section>
+    {{-- CTA --}}
 
-    <x-footer/>
-
+    {{-- <x-footer /> --}}
 </div>
