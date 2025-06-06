@@ -8,9 +8,12 @@ class QuizList extends Component
 {
     public $quizzes;
 
-    public function mount($quizzes)
+    public $studentAnswers;
+
+    public function mount($quizzes, $studentAnswers)
     {
         $this->quizzes = $quizzes;
+        $this->studentAnswers = $studentAnswers;
     }
 
     public function render()

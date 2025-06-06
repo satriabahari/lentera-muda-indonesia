@@ -31,7 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->brandName('Lentera Muda Indonesia')
-            ->login()
+            // ->login()p
             ->colors([
                 'primary' => "#38bdf8",
             ])
