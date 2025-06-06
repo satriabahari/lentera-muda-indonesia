@@ -10,11 +10,17 @@ class StudentAnswer extends Model
     use HasFactory;
 
     protected $fillable = [
+        'course_id',
+        'quiz_id',
         'question_id',
         'user_id',
         'answer_text',
         'score',
     ];
+
+    public function quiz() {
+        return $this->belongsTo(Quiz::class);
+    }
 
     public function question()
     {
