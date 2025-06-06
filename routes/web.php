@@ -12,7 +12,7 @@ use App\Livewire\QuizResult;
 use App\Livewire\StudentDetail;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
+// Route::view('/', 'dashboard');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -32,7 +32,7 @@ Route::get('/courses/{course}/lessons/{lesson}', LessonDetail::class)->name('les
 
 Route::get('/courses/{course}/quiz/{quiz}', QuizDetail::class)->name('quiz.show');
 
-Route::get('/courses/{course}/quiz/{quiz}/result', QuizResult::class)->name('quiz.result');
+Route::get('/courses/{course}/quizzes/{quiz}/result', QuizResult::class)->name('quiz.result');
 
 Route::get('students', StudentList::class)->name('student');
 
