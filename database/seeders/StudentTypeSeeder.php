@@ -15,12 +15,12 @@ class StudentTypeSeeder extends Seeder
     {
         StudentType::insert([
             [
-                'name' => 'lentera_course',
+                'name' => 'Lentera Course',
                 "created_at" => now(),
                 "updated_at" => now(),
             ],
             [
-                'name' => 'lentera_academy',
+                'name' => 'Lentera Academy',
                 "created_at" => now(),
                 "updated_at" => now(),
             ],
