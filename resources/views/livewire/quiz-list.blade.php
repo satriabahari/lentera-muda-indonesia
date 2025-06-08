@@ -1,5 +1,5 @@
 <div class="w-full mb-16">
-    <h2 class="text-2xl font-bold my-6">Kuis</h2>
+    <h2 class="text-2xl font-bold my-6 text-cyan-900">Kuis</h2>
 
     @forelse ($quizzes as $quiz)
         @if ($quiz->is_active)

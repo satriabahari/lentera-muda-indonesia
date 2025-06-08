@@ -6,7 +6,9 @@ use App\Models\Quiz;
 use App\Models\StudentAnswer;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\Attributes\Title;
 
+#[Title('Lentera Muda Indonesia')]
 class QuizDetail extends Component
 {
     public Quiz $quiz;

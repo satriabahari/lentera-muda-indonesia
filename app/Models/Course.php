@@ -49,7 +49,7 @@ class Course extends Model
         return $this->hasMany(Review::class);
     }
 
-    public function certificates()
+    public function certificate()
     {
         return $this->hasOne(Certificate::class);
     }

@@ -15,7 +15,7 @@ class StudentChart extends ChartWidget
     protected function getData(): array
     {
         $activeFilter = $this->filter;
-        
+
         return [
             'datasets' => [
                 [

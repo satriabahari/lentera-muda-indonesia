@@ -13,63 +13,84 @@ use Illuminate\Support\Arr;
 class CourseSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Jalankan seed pada database.
      */
     public function run(): void
     {
+
+        $course = Course::create([
+                'title' => "Testing",
+                'description' => "Kursus komprehensif ini dirancang untuk membantu pelajar di Tingkat membangun dasar yang kuat dalam pengetahuan teoretis maupun penerapan praktis.
+                Melalui serangkaian pelajaran yang terstruktur, Anda akan mempelajari prinsip-prinsip inti, kerangka kerja, dan studi kasus yang mencerminkan tantangan dunia nyata di berbagai bidang.
+                Setiap modul dirancang dengan hati-hati untuk memperkuat pemahaman Anda melalui perpaduan materi multimedia, tutorial terpandu, dan proyek praktis.
+                Selain itu, kursus ini menekankan pembelajaran kolaboratif melalui forum diskusi, tinjauan sejawat, dan umpan balik dari instruktur.
+                Di akhir kursus ini, Anda akan dibekali keterampilan yang diperlukan untuk melanjutkan ke tingkat berikutnya atau langsung menerapkan apa yang telah Anda pelajari dalam pekerjaan atau studi Anda.
+                Baik Anda mengejar keunggulan akademik maupun pertumbuhan profesional, kursus ini akan menjadi batu loncatan penting dalam perjalanan Anda.",
+                'image' => "placeholder.png",
+                'student_type_id' => 1,
+            ]);
+
+
         $studentTypeIds = [1, 2]; // Pastikan data ini tersedia di tabel student_types
 
         for ($i = 1; $i <= 3; $i++) {
-            // Buat Course
+            // Buat Kursus
             $course = Course::create([
-                'title' => "Mastering Skill Level $i",
-                'description' => "This comprehensive course is tailored to help learners at Level $i build a strong foundation in both theoretical knowledge and practical applications.
-                Across a structured set of lessons, you will explore core principles, frameworks, and case studies that reflect real-world challenges in various domains.
-                Each module is carefully crafted to reinforce your understanding through a blend of multimedia materials, guided tutorials, and hands-on projects.
-                Additionally, the course emphasizes collaborative learning through discussion forums, peer reviews, and instructor feedback.
-                By the end of this course, you will be equipped with the skills necessary to progress confidently to the next level or apply what you've learned directly in your work or studies.
-                Whether you're pursuing academic excellence or professional growth, this course will serve as a vital stepping stone on your journey.",
+                'title' => "Menguasai Keterampilan Tingkat $i",
+                'description' => "Kursus komprehensif ini dirancang untuk membantu pelajar di Tingkat $i membangun dasar yang kuat dalam pengetahuan teoretis maupun penerapan praktis.
+                Melalui serangkaian pelajaran yang terstruktur, Anda akan mempelajari prinsip-prinsip inti, kerangka kerja, dan studi kasus yang mencerminkan tantangan dunia nyata di berbagai bidang.
+                Setiap modul dirancang dengan hati-hati untuk memperkuat pemahaman Anda melalui perpaduan materi multimedia, tutorial terpandu, dan proyek praktis.
+                Selain itu, kursus ini menekankan pembelajaran kolaboratif melalui forum diskusi, tinjauan sejawat, dan umpan balik dari instruktur.
+                Di akhir kursus ini, Anda akan dibekali keterampilan yang diperlukan untuk melanjutkan ke tingkat berikutnya atau langsung menerapkan apa yang telah Anda pelajari dalam pekerjaan atau studi Anda.
+                Baik Anda mengejar keunggulan akademik maupun pertumbuhan profesional, kursus ini akan menjadi batu loncatan penting dalam perjalanan Anda.",
                 'image' => "placeholder.png",
                 'student_type_id' => Arr::random($studentTypeIds),
             ]);
 
-            // Tambahkan Certificate
+            // Tambahkan Sertifikat
             Certificate::create([
                 'course_id' => $course->id,
-                'name' => "Completion Certificate for Level $i",
-                'image' => "certificate_level_$i.png",
+                'name' => "Sertifikat Penyelesaian untuk Tingkat $i",
+                'image' => "placeholder.png",
             ]);
 
-            // Tambahkan Lessons
+            // Tambahkan Pelajaran
             for ($j = 1; $j <= 3; $j++) {
                 Lesson::create([
                     'course_id' => $course->id,
-                    'title' => "Lesson $j: Deep Dive into Key Concepts",
-                    'content' => "In this lesson, we take an in-depth look at part $j of the core competencies for Skill Level $i. You'll begin by understanding the historical and theoretical background of the topic,
-                    including its evolution and relevance in today’s digital and globalized world. From there, we move into detailed explanations of major frameworks, models, and practical tools used in the field.
-                    Real-world case studies and examples will help bridge theory with application, showing how these ideas are implemented across industries and sectors.
-                    The lesson includes multiple checkpoints for reflection, interactive exercises, and opportunities to apply your knowledge to simulated environments.
-                    Additionally, you'll gain insight from expert interviews and curated reading materials that go beyond the core textbook.
-                    By the end of this lesson, you should be able to critically evaluate, apply, and communicate the main ideas with confidence.",
+                    'title' => "Pelajaran $j: Penyelaman Mendalam ke Konsep Utama",
+                    'content' => "
+        <p>Dalam pelajaran ini, kita akan melihat secara mendalam bagian <strong>$j</strong> dari kompetensi inti untuk Tingkat Keterampilan <strong>$i</strong>.</p>
+        <p>Anda akan memahami latar belakang historis dan teoretis dari topik, termasuk evolusi dan relevansinya di dunia digital dan global saat ini.</p>
+        <p>Pelajaran ini mencakup:</p>
+        <ul>
+            <li>Penjelasan mendetail tentang kerangka kerja dan alat</li>
+            <li>Studi kasus dunia nyata</li>
+            <li>Latihan interaktif dan wawasan dari para ahli</li>
+        </ul>
+        <p>Di akhir pelajaran ini, Anda diharapkan dapat mengevaluasi secara kritis, menerapkan, dan mengkomunikasikan ide-ide utama dengan percaya diri.</p>
+    ",
                     'video_url' => "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
                     'is_active' => true,
                 ]);
             }
 
-            // Tambahkan Quiz dan Questions
+            // Tambahkan Kuis dan Pertanyaan
             for ($k = 1; $k <= 3; $k++) {
                 $quiz = Quiz::create([
                     'course_id' => $course->id,
-                    'title' => "Quiz $k: Comprehensive Assessment for Level $i",
+                    'title' => "Kuis $k: Penilaian Komprehensif untuk Tingkat $i",
                     'is_active' => true,
                 ]);
 
                 Question::create([
                     'quiz_id' => $quiz->id,
-                    'question_text' => "Which of the following statements best reflects the key principle discussed in Lesson $k of Level $i? Consider both theoretical aspects and real-world implications in your answer.",
+                    'question_text' => "Manakah dari pernyataan berikut yang paling mencerminkan prinsip utama yang dibahas dalam Pelajaran $k dari Tingkat $i? Pertimbangkan aspek teoritis dan implikasi dunia nyata dalam jawaban Anda.",
                     'is_active' => true,
                 ]);
             }
+
+
         }
     }
 }
