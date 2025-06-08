@@ -1,17 +1,11 @@
 <x-app-layout>
     <div class="p-8 pt-24 mb-32">
-
-        {{-- <div
-            class="absolute inset-0 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
-        </div> --}}
-
         <div class="">
-            <h1 class="text-2xl font-bold mb-4">Course List</h1>
-
+            <h1 class="text-2xl font-bold mb-4 text-cyan-900">Course List</h1>
             <div class="grid grid-cols-4 gap-4">
                 @forelse($courses as $course)
                     @if ($course->is_active)
-                        <div class="w-full rounded-md bg-white shadow-lg flex flex-col h-full border border-neutral-100">
+                        <div class="w-full rounded-md bg-white shadow-lg flex flex-col h-full border border-neutral-100 hover:scale-105 transition duration-300">
                             <div class="relative p-4">
                                 <img src="{{ Storage::url($course->image) }}" class="w-full object-cover h-48 rounded-md"
                                     alt="{{ $course->title }}">

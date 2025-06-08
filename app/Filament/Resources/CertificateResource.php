@@ -54,7 +54,7 @@ class CertificateResource extends Resource
                     ->required(),
 
                 FileUpload::make('image')
-                    ->directory('courses')
+                    ->directory('certificates')
                     ->disk('public')
                     ->image()
                     ->imageEditor()

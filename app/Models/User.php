@@ -9,6 +9,10 @@ use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\StudentAnswer[] $studentAnswers
+ */
+
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -64,12 +68,12 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasOne(StudentProfile::class);
     }
 
-    public function studentAnswer()
+    public function studentAnswers()
     {
         return $this->hasMany(StudentAnswer::class);
     }
 
-    public function courseCompletion()
+    public function courseCompletions()
     {
         return $this->hasMany(CourseCompletion::class);
     }

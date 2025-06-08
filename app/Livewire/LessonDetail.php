@@ -5,7 +5,9 @@ namespace App\Livewire;
 use App\Models\Course;
 use App\Models\Lesson;
 use Livewire\Component;
+use Livewire\Attributes\Title;
 
+#[Title('Lentera Muda Indonesia')]
 class LessonDetail extends Component
 {
     // public $course;

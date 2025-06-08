@@ -1,41 +1,68 @@
 <?php
 
-use App\Livewire\Counter;
-use App\Livewire\Student;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use App\Livewire\CourseList;
-use App\Livewire\LessonList;
-use App\Livewire\QuizDetail;
-use App\Livewire\StudentList;
 use App\Livewire\CourseDetail;
 use App\Livewire\LessonDetail;
+use App\Livewire\QuizDetail;
 use App\Livewire\QuizResult;
-use App\Livewire\StudentDetail;
-use Illuminate\Support\Facades\Route;
 
-// Route::view('/', 'dashboard');
+// =====================
+// Dashboard & Profile
+// =====================
 
-Route::view('dashboard', 'dashboard')
+Route::view('/', 'home')
     ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+    ->name('home');
 
-Route::view('profile', 'profile')
+Route::view('/profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::get('/courses', CourseList::class)->name('course');
+// =====================
+// Courses
+// =====================
 
-// Route::get('/courses/{courseId}', CourseDetail::class)->name('course.show');
+Route::get('/courses', CourseList::class)
+    ->middleware(['auth', 'verified'])
+    ->name('course');
 
-Route::get('/courses/{course}', CourseDetail::class)->name('course.show');
+Route::get('/courses/{course}', CourseDetail::class)
+    ->middleware(['auth', 'verified'])
+    ->name('course.show');
 
-Route::get('/courses/{course}/lessons/{lesson}', LessonDetail::class)->name('lesson.show');
+Route::get('/courses/{course}/lessons/{lesson}', LessonDetail::class)
+    ->middleware(['auth', 'verified'])
+    ->name('lesson.show');
 
-Route::get('/courses/{course}/quiz/{quiz}', QuizDetail::class)->name('quiz.show');
+Route::get('/courses/{course}/quiz/{quiz}', QuizDetail::class)
+    ->middleware(['auth', 'verified'])
+    ->name('quiz.show');
 
-Route::get('/courses/{course}/quizzes/{quiz}/result', QuizResult::class)->name('quiz.result');
+Route::get('/courses/{course}/quizzes/{quiz}/result', QuizResult::class)
+    ->middleware(['auth', 'verified'])
+    ->name('quiz.result');
 
-Route::get('students', StudentList::class)->name('student');
+// =====================
+// Certificate Download
+// =====================
 
-Route::get('/students/{studentId}', StudentDetail::class)->name('student.show');
+Route::get('/certificate/download/{filename}', function ($filename) {
+    /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+    $disk = Storage::disk('public');
+
+    $path = 'certificates/' . $filename;
+
+    if (!$disk->exists($path)) {
+        abort(404);
+    }
+
+    return $disk->download($path);
+})->name('certificate.download');
+
+// =====================
+// Auth Routes
+// =====================
 
 require __DIR__ . '/auth.php';

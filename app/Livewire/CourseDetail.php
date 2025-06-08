@@ -8,7 +8,9 @@ use App\Models\StudentAnswer;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\Attributes\Title;
 
+#[Title('Lentera Muda Indonesia')]
 class CourseDetail extends Component
 {
     public Course $course;
@@ -17,7 +19,7 @@ class CourseDetail extends Component
 
     public function mount(Course $course)
     {
-        $this->course = $course->load(['lessons', 'quizzes']);
+        $this->course = $course->load(['lessons', 'quizzes', 'certificate']);
 
         // $this->studentAnswers = $course->studentAnswers ?? collect();
 
@@ -38,6 +40,7 @@ class CourseDetail extends Component
             'studentAnswers' => $this->studentAnswers,
             'lessons' => $this->course->lessons,
             'quizzes' => $this->course->quizzes,
+            'certificate' => $this->course->certificate,
         ]);
     }
 }

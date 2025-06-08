@@ -28,10 +28,10 @@ new #[Layout('layouts.guest')] class extends Component {
         if (in_array($roleId, [1, 2])) {
             $this->redirect(route('filament.admin.pages.dashboard', absolute: false));
         } elseif ($roleId === 3) {
-            $this->redirect(route('dashboard'), navigate: true);
+            $this->redirect(route('home'), navigate: true);
         } else {
             // fallback jika role_id tidak dikenali
-            $this->redirect(route('dashboard'), navigate: true);
+            $this->redirect(route('home'), navigate: true);
         }
     }
 }; ?>
@@ -60,13 +60,13 @@ new #[Layout('layouts.guest')] class extends Component {
         </div>
 
         <!-- Remember Me -->
-        <div class="block mt-4">
+        {{-- <div class="block mt-4">
             <label for="remember" class="inline-flex items-center">
                 <input wire:model="form.remember" id="remember" type="checkbox"
                     class="rounded border-gray-300  text-indigo-600 shadow-sm focus:ring-indigo-500 " name="remember">
                 <span class="ms-2 text-sm text-gray-600 ">{{ __('Remember me') }}</span>
             </label>
-        </div>
+        </div> --}}
 
         <div class="flex items-center justify-end mt-4">
             {{-- @if (Route::has('password.request'))
