@@ -10,6 +10,7 @@ class QuizList extends Component
 
     public $studentAnswers;
 
+
     public function mount($quizzes, $studentAnswers)
     {
         $this->quizzes = $quizzes;

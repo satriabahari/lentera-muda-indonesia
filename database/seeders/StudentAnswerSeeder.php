@@ -24,7 +24,7 @@ class StudentAnswerSeeder extends Seeder
                     'question_id' => $question->id,
                     'user_id' => $userId,
                     'answer_text' => "Jawaban user $userId untuk pertanyaan {$question->id}",
-                    'score' => rand(1, 10),
+                    'score' => rand(60, 100),
                 ]);
             }
         }

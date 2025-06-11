@@ -59,7 +59,7 @@ new #[Layout('layouts.guest')] class extends Component {
 }; ?>
 
 <div>
-    <form wire:submit="register">
+    <form data-aos="fade-up" data-aos-delay="200" wire:submit="register">
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Nama')" />

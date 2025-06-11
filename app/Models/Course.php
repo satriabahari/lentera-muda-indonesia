@@ -59,7 +59,7 @@ class Course extends Model
         return $this->hasMany(StudentAnswer::class);
     }
 
-    public function courseCompletion()
+    public function courseCompletions()
     {
         return $this->hasMany(CourseCompletion::class);
     }
