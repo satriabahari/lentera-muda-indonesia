@@ -1,4 +1,4 @@
-<footer class="bg-white px-16">
+<footer data-aos="fade-up" class="bg-white px-16">
     <div class="w-full mx-auto md:flex justify-between items-start border-t border-neutral-300 pt-6">
 
         <h1 class="text-2xl font-bold text-cyan-900">Lentera Muda Indonesia</h1>
@@ -13,8 +13,8 @@
                 Kab. Muaro Jambi<br>
                 Jambi
             </p>
-            <p class="mt-2 text-sm text-neutral-500">Phone: +62 8123 45678 90</p>
-            <p class="text-sm text-neutral-500">Email: namaakunemail@gmail.com</p>
+            <p class="mt-2 text-sm text-neutral-500">Phone: +6282183340920</p>
+            <p class="text-sm text-neutral-500">Email: satriaabaharii@gmail.com</p>
         </div>
 
         <div class="mb-6 md:mb-0">
@@ -32,7 +32,8 @@
     <div
         class="flex justify-between items-center mt-8 text-xs text-neutral-500 bg-white py-6 border-t border-neutral-300">
         <p>
-            © Copyright 2025 <a href="#" class="text-cyan-500">Lentera Muda Indonesia</a>. All Rights Reserved
+            © Copyright 2025 <a href="https://www.instagram.com/lenteramuda.idn/" class="text-cyan-500">Lentera Muda
+                Indonesia</a>. All Rights Reserved
         </p>
 
         <div class="flex gap-4">

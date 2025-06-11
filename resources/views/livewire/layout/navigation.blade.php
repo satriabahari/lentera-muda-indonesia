@@ -15,7 +15,7 @@ new class extends Component {
     }
 }; ?>
 
-<nav x-data="{ open: false }" class="bg-white border-neutral-300 fixed z-50 top-0 left-0 w-full ">
+<nav data-aos="fade-down" x-data="{ open: false }" class="bg-white border-neutral-300 fixed z-50 top-0 left-0 w-full ">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 shadow-sm">
         <div class="flex justify-between h-16">

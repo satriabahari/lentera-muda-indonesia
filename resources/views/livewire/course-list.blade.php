@@ -1,23 +1,25 @@
 <x-app-layout>
     <div class="p-8 pt-24 mb-32">
         <div class="">
-            <h1 class="text-2xl font-bold mb-4 text-cyan-900">Course List</h1>
+            <h1 data-aos="fade-right" class="text-2xl font-bold mb-4 text-cyan-900">Course List</h1>
             <div class="grid grid-cols-4 gap-4">
                 @forelse($courses as $course)
                     @if ($course->is_active)
-                        <div class="w-full rounded-md bg-white shadow-lg flex flex-col h-full border border-neutral-100 hover:scale-105 transition duration-300">
+                        <div data-aos="fade-down" data-aos-delay="{{ $loop->index * 200 }}"
+                            class="w-full rounded-md bg-white shadow-lg flex flex-col h-full border border-neutral-100 hover:scale-105 transition duration-300">
                             <div class="relative p-4">
                                 <img src="{{ Storage::url($course->image) }}" class="w-full object-cover h-48 rounded-md"
                                     alt="{{ $course->title }}">
 
                                 <div @class([
-                                    'absolute top-6 right-6 py-1 px-2 text-neutral-50 rounded-md text-xs',
-                                    'bg-orange-500' => $course->studentType->name === 'Lentera Course',
-                                    'bg-green-500' => $course->studentType->name === 'Lentera Academy',
-                                    'bg-gray-300' => !in_array($course->category, [
-                                        'Lentera Course',
-                                        'Lentera Academy',
-                                    ]),
+                                    'absolute top-6 right-6  py-1 px-2 rounded-md text-sm w-fit border-2 font-semibold text-xs',
+                                    'bg-orange-50 border-orange-500 text-orange-500' =>
+                                        $course->studentType->name === 'Lentera Academy',
+                                    'bg-indigo-50 border-indigo-500 text-indigo-500' =>
+                                        $course->studentType->name === 'Lentera Course',
+                                    'bg-neutral-50 border-neutral-500 text-neutral-500' => !in_array(
+                                        $course->studentType->name,
+                                        ['Lentera Course', 'Lentera Academy']),
                                 ])>
                                     {{ $course->studentType->name }}
                                 </div>

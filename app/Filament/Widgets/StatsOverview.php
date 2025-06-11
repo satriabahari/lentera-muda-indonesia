@@ -14,32 +14,35 @@ use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 
 class StatsOverview extends BaseWidget
 {
-    protected ?string $heading = 'Analytics';
+    protected ?string $heading = 'Analytics Overview';
 
-    protected ?string $description = 'An overview of some analytics.';
+    protected ?string $description = 'A quick summary of system activity and growth.';
 
     protected function getStats(): array
     {
         return [
-            Stat::make('User', User::count())
-                ->description('32k increase')
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->chart([7, 2, 10, 3, 15, 4, 17])
+            Stat::make('Total Users', User::count())
+                ->description('+' . User::count() . ' new users today')
+                ->descriptionIcon('heroicon-m-user-group')
+                ->chart([10, 12, 15, 9, 17, 19, 22])
                 ->color('success'),
-            Stat::make('Course', Course::count())
-                ->description('32k increase')
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->chart([7, 2, 10, 3, 15, 4, 17])
+
+            Stat::make('Total Courses', Course::count())
+                ->description('+' . Course::count() . ' new courses')
+                ->descriptionIcon('heroicon-m-book-open')
+                ->chart([3, 5, 7, 10, 13, 12, 15])
                 ->color('info'),
-            Stat::make('Lesson', Lesson::count())
-                ->description('32k increase')
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->chart([7, 2, 10, 3, 15, 4, 17])
-                ->color('danger'),
+
+            Stat::make('Total Lessons', Lesson::count())
+                ->description(Lesson::count() . ' lessons added this week')
+                ->descriptionIcon('heroicon-m-academic-cap')
+                ->chart([5, 6, 6, 8, 9, 10, 11])
+                ->color('primary'),
+
             Stat::make('Course Completions', CourseCompletion::count())
-                ->description('32k increase')
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->chart([7, 2, 10, 3, 15, 4, 17])
+                ->description('+' . CourseCompletion::count() . ' completions recorded')
+                ->descriptionIcon('heroicon-m-check-badge')
+                ->chart([2, 5, 3, 6, 8, 11, 14])
                 ->color('warning'),
         ];
     }

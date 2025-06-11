@@ -18,8 +18,9 @@ class CourseCompletionSeeder extends Seeder
                 CourseCompletion::create([
                     'user_id' => $userId,
                     'course_id' => $courseId,
-                    'score' => rand(70, 100),
-                    'is_completed' => true,
+                    // 'score' => rand(70, 100),
+                    'score' => null,
+                    'is_completed' => false,
                 ]);
             }
         }

@@ -8,89 +8,190 @@ use App\Models\Certificate;
 use App\Models\Lesson;
 use App\Models\Quiz;
 use App\Models\Question;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 class CourseSeeder extends Seeder
 {
-    /**
-     * Jalankan seed pada database.
-     */
     public function run(): void
     {
 
-        $course = Course::create([
-                'title' => "Testing",
-                'description' => "Kursus komprehensif ini dirancang untuk membantu pelajar di Tingkat membangun dasar yang kuat dalam pengetahuan teoretis maupun penerapan praktis.
-                Melalui serangkaian pelajaran yang terstruktur, Anda akan mempelajari prinsip-prinsip inti, kerangka kerja, dan studi kasus yang mencerminkan tantangan dunia nyata di berbagai bidang.
-                Setiap modul dirancang dengan hati-hati untuk memperkuat pemahaman Anda melalui perpaduan materi multimedia, tutorial terpandu, dan proyek praktis.
-                Selain itu, kursus ini menekankan pembelajaran kolaboratif melalui forum diskusi, tinjauan sejawat, dan umpan balik dari instruktur.
-                Di akhir kursus ini, Anda akan dibekali keterampilan yang diperlukan untuk melanjutkan ke tingkat berikutnya atau langsung menerapkan apa yang telah Anda pelajari dalam pekerjaan atau studi Anda.
-                Baik Anda mengejar keunggulan akademik maupun pertumbuhan profesional, kursus ini akan menjadi batu loncatan penting dalam perjalanan Anda.",
-                'image' => "placeholder.png",
-                'student_type_id' => 1,
-            ]);
 
+        $imagePath = 'certificates/certificate.jpg';
+        $sourceImage = public_path('certificates/certificate.jpg');
 
-        $studentTypeIds = [1, 2]; // Pastikan data ini tersedia di tabel student_types
-
-        for ($i = 1; $i <= 3; $i++) {
-            // Buat Kursus
-            $course = Course::create([
-                'title' => "Menguasai Keterampilan Tingkat $i",
-                'description' => "Kursus komprehensif ini dirancang untuk membantu pelajar di Tingkat $i membangun dasar yang kuat dalam pengetahuan teoretis maupun penerapan praktis.
-                Melalui serangkaian pelajaran yang terstruktur, Anda akan mempelajari prinsip-prinsip inti, kerangka kerja, dan studi kasus yang mencerminkan tantangan dunia nyata di berbagai bidang.
-                Setiap modul dirancang dengan hati-hati untuk memperkuat pemahaman Anda melalui perpaduan materi multimedia, tutorial terpandu, dan proyek praktis.
-                Selain itu, kursus ini menekankan pembelajaran kolaboratif melalui forum diskusi, tinjauan sejawat, dan umpan balik dari instruktur.
-                Di akhir kursus ini, Anda akan dibekali keterampilan yang diperlukan untuk melanjutkan ke tingkat berikutnya atau langsung menerapkan apa yang telah Anda pelajari dalam pekerjaan atau studi Anda.
-                Baik Anda mengejar keunggulan akademik maupun pertumbuhan profesional, kursus ini akan menjadi batu loncatan penting dalam perjalanan Anda.",
-                'image' => "placeholder.png",
-                'student_type_id' => Arr::random($studentTypeIds),
-            ]);
-
-            // Tambahkan Sertifikat
-            Certificate::create([
-                'course_id' => $course->id,
-                'name' => "Sertifikat Penyelesaian untuk Tingkat $i",
-                'image' => "placeholder.png",
-            ]);
-
-            // Tambahkan Pelajaran
-            for ($j = 1; $j <= 3; $j++) {
-                Lesson::create([
-                    'course_id' => $course->id,
-                    'title' => "Pelajaran $j: Penyelaman Mendalam ke Konsep Utama",
-                    'content' => "
-        <p>Dalam pelajaran ini, kita akan melihat secara mendalam bagian <strong>$j</strong> dari kompetensi inti untuk Tingkat Keterampilan <strong>$i</strong>.</p>
-        <p>Anda akan memahami latar belakang historis dan teoretis dari topik, termasuk evolusi dan relevansinya di dunia digital dan global saat ini.</p>
-        <p>Pelajaran ini mencakup:</p>
-        <ul>
-            <li>Penjelasan mendetail tentang kerangka kerja dan alat</li>
-            <li>Studi kasus dunia nyata</li>
-            <li>Latihan interaktif dan wawasan dari para ahli</li>
-        </ul>
-        <p>Di akhir pelajaran ini, Anda diharapkan dapat mengevaluasi secara kritis, menerapkan, dan mengkomunikasikan ide-ide utama dengan percaya diri.</p>
-    ",
-                    'video_url' => "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
-                    'is_active' => true,
-                ]);
+        if (!Storage::disk('public')->exists($imagePath)) {
+            if (file_exists($sourceImage)) {
+                Storage::disk('public')->put($imagePath, file_get_contents($sourceImage));
+            } else {
+                throw new \Exception("File placeholder.png tidak ditemukan di public/");
             }
+        }
 
-            // Tambahkan Kuis dan Pertanyaan
-            for ($k = 1; $k <= 3; $k++) {
-                $quiz = Quiz::create([
+
+        $lenteraCourse = [
+            'Matematika Dasar' => [
+                'description' => 'Pelajari konsep dasar matematika mulai dari operasi bilangan hingga geometri dasar. Sangat cocok untuk pelajar yang ingin memperkuat pemahaman logika dan perhitungan.',
+                'image' => 'courses/matematika.jpeg',
+                'lessons' => [
+                    'Operasi Bilangan Bulat',
+                    'Pecahan dan Desimal',
+                    'Dasar-Dasar Geometri'
+                ],
+                'quizzes' => [
+                    'Kuis Operasi Bilangan',
+                    'Kuis Pecahan dan Desimal',
+                    'Kuis Geometri'
+                ]
+            ],
+            'Bahasa Indonesia' => [
+                'description' => 'Tingkatkan kemampuan berbahasa Indonesia, mulai dari membaca, menulis, hingga berbicara secara efektif dan sesuai kaidah.',
+                'image' => 'courses/bahasa-indonesia.jpg',
+                'lessons' => [
+                    'Membaca Efektif',
+                    'Menulis Paragraf',
+                    'Pidato dan Presentasi'
+                ],
+                'quizzes' => [
+                    'Kuis Membaca',
+                    'Kuis Menulis',
+                    'Kuis Pidato'
+                ]
+            ],
+            'Ilmu Pengetahuan Alam (IPA)' => [
+                'description' => 'Kenali dasar-dasar ilmu alam mulai dari makhluk hidup, materi, hingga energi. Cocok untuk pelajar yang menyukai eksplorasi dunia fisik.',
+                'image' => 'courses/ipa.jpeg',
+                'lessons' => [
+                    'Makhluk Hidup dan Lingkungannya',
+                    'Sifat dan Perubahan Materi',
+                    'Energi dan Perubahannya'
+                ],
+                'quizzes' => [
+                    'Kuis Ekosistem',
+                    'Kuis Materi',
+                    'Kuis Energi'
+                ]
+            ],
+            'Agama' => [
+                'description' => 'Pelajari nilai-nilai keagamaan, etika, dan moral yang membentuk karakter pribadi dan kehidupan sosial. Materi ini penting untuk menumbuhkan sikap toleransi, saling menghormati, dan tanggung jawab spiritual.',
+                'image' => 'courses/agama.jpg',
+                'lessons' => [
+                    'Ajaran dan Nilai Agama',
+                    'Etika dan Moral dalam Kehidupan',
+                    'Toleransi Antar Umat Beragama'
+                ],
+                'quizzes' => [
+                    'Kuis Ajaran Agama',
+                    'Kuis Etika',
+                    'Kuis Toleransi'
+                ]
+            ]
+        ];
+
+        $lenteraAcademy = [
+            'Kepemimpinan OSIS' => [
+                'description' => 'Pelatihan khusus bagi pengurus OSIS dalam membangun karakter kepemimpinan yang visioner, kolaboratif, dan bertanggung jawab.',
+                'image' => 'courses/kepemimpinan.png',
+                'lessons' => [
+                    'Karakter Pemimpin Sekolah',
+                    'Membangun Tim yang Solid',
+                    'Etika dan Tanggung Jawab Organisasi'
+                ],
+                'quizzes' => [
+                    'Kuis Kepemimpinan',
+                    'Kuis Kerja Tim',
+                    'Kuis Etika Organisasi'
+                ]
+            ],
+            'Manajemen Proyek OSIS' => [
+                'description' => 'Pelajari cara mengelola program dan kegiatan OSIS secara efektif, mulai dari perencanaan hingga evaluasi.',
+                'image' => 'courses/manajemen-proyek.jpg',
+                'lessons' => [
+                    'Perencanaan Kegiatan',
+                    'Pelaksanaan dan Koordinasi',
+                    'Evaluasi dan Pelaporan'
+                ],
+                'quizzes' => [
+                    'Kuis Perencanaan',
+                    'Kuis Pelaksanaan',
+                    'Kuis Evaluasi'
+                ]
+            ],
+            'Public Speaking' => [
+                'description' => 'Tingkatkan kepercayaan diri dan keterampilan berbicara di depan umum untuk presentasi maupun kegiatan OSIS.',
+                'image' => 'courses/public-speaking.jpg',
+                'lessons' => [
+                    'Dasar Public Speaking',
+                    'Teknik Gestur dan Intonasi',
+                    'Berbicara dalam Acara Formal'
+                ],
+                'quizzes' => [
+                    'Kuis Dasar',
+                    'Kuis Teknik',
+                    'Kuis Acara Formal'
+                ]
+            ],
+            'Kreativitas dan Inovasi' => [
+                'description' => 'Bangun kemampuan berpikir kreatif dan inovatif dalam merancang kegiatan OSIS yang menarik dan bermanfaat.',
+                'image' => 'courses/kreativitas.png',
+                'lessons' => [
+                    'Ide dan Brainstorming',
+                    'Desain Kegiatan Kreatif',
+                    'Evaluasi Inovasi'
+                ],
+                'quizzes' => [
+                    'Kuis Brainstorming',
+                    'Kuis Desain',
+                    'Kuis Inovasi'
+                ]
+            ]
+        ];
+
+        $video = 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4';
+
+        foreach (
+            [
+                1 => $lenteraCourse,
+                2 => $lenteraAcademy
+            ] as $studentTypeId => $courses
+        ) {
+            foreach ($courses as $courseTitle => $data) {
+                $course = Course::create([
+                    'title' => $courseTitle,
+                    'description' => $data['description'],
+                    'image' => $data['image'],
+                    'student_type_id' => $studentTypeId,
+                ]);
+
+                Certificate::create([
                     'course_id' => $course->id,
-                    'title' => "Kuis $k: Penilaian Komprehensif untuk Tingkat $i",
-                    'is_active' => true,
+                    'name' => 'Sertifikat Penyelesaian: ' . $courseTitle,
+                    'image' => 'certificates/certificate.jpg'
                 ]);
 
-                Question::create([
-                    'quiz_id' => $quiz->id,
-                    'question_text' => "Manakah dari pernyataan berikut yang paling mencerminkan prinsip utama yang dibahas dalam Pelajaran $k dari Tingkat $i? Pertimbangkan aspek teoritis dan implikasi dunia nyata dalam jawaban Anda.",
-                    'is_active' => true,
-                ]);
+                foreach ($data['lessons'] as $index => $lessonTitle) {
+                    Lesson::create([
+                        'course_id' => $course->id,
+                        'title' => $lessonTitle,
+                        'content' => "<p><strong>{$lessonTitle}</strong> adalah bagian penting dari pembelajaran ini. Anda akan mempelajari topik ini melalui penjelasan mendalam, contoh praktis, dan studi kasus nyata.</p><p>Kami akan membahas teori dasar, penerapannya dalam kehidupan sehari-hari, serta menyediakan latihan interaktif untuk memperkuat pemahaman Anda.</p><p>Setiap bagian pelajaran dirancang agar Anda tidak hanya memahami secara konseptual, tetapi juga mampu menerapkan pengetahuan secara kritis dan reflektif. Selamat belajar!</p>",
+                        'video_url' => $video,
+                        'is_active' => true
+                    ]);
+                }
+
+                foreach ($data['quizzes'] as $quizTitle) {
+                    $quiz = Quiz::create([
+                        'course_id' => $course->id,
+                        'title' => $quizTitle,
+                        'is_active' => true
+                    ]);
+
+                    Question::create([
+                        'quiz_id' => $quiz->id,
+                        'question_text' => "Apa konsep utama yang dibahas dan bagaimana penerapannya?",
+                        'is_active' => true
+                    ]);
+                }
             }
-
-
         }
     }
 }
